@@ -25,9 +25,10 @@
 
 import { getStore } from '@netlify/blobs';
 
-// Bumped to v2 to drop the probe row left behind while proving the store
-// actually persists. Bumping this is also how you wipe the board.
-const KEY = 'scores-v2';
+// Bumped to v3 to drop the probe rows left behind while proving the store
+// persists and that strong consistency fixed the stale-read problem. Bumping
+// this is also how you wipe the board.
+const KEY = 'scores-v3';
 const PER_BOARD = 10;
 
 // One entry per fighter, in circuit order, plus the full run. Keep this list in

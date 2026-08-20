@@ -22,11 +22,10 @@ netlify/
 The `netlify/functions/` nesting is the one thing that must not be flattened;
 that path is how Netlify finds the function.
 
-Name the Netlify site **harvest-punch-out**, because the Hub's Arcade tab
-points at `https://harvest-punch-out.netlify.app`. The repo is `harvestpunchout`
-and the site is `harvest-punch-out` — the same split Out Run already has
-(`harvestoutrun` / `harvest-outrun.netlify.app`), so this is the convention
-rather than a mistake. If it gets a different name,
+The Netlify site is **harvest-punchout**, so the game is at
+`https://harvest-punchout.netlify.app`, and that is what the Hub's Arcade tab
+points at. Repo `harvestpunchout`, site `harvest-punchout` — unlike Out Run,
+whose repo and site names differ (`harvestoutrun` / `harvest-outrun`). If it gets a different name,
 change the `url` in the `GAMES` array in `src/components/Game.jsx`.
 
 ## After deploying
@@ -138,7 +137,7 @@ they like. The function clamps times (6–600s a fight, 60–7200s a circuit) an
 strips HTML from names, so a bad request cannot corrupt the board or inject
 anything — but it cannot tell a real 41 seconds from an invented one. For
 coworkers that is fine. To wipe the board, bump `KEY` in `scores.mjs` — it is
-on `scores-v2` now, having been bumped once already to drop a probe row left
+on `scores-v3` now, having been bumped twice already to drop probe rows left
 over from proving the store persists.
 
 ## Testing note
