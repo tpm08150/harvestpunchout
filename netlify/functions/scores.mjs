@@ -82,9 +82,12 @@ export default async (request) => {
   try {
     store = getStore('punchout');
   } catch (err) {
-    // No Blobs available — the page falls back to a browser-only board, which
-    // is worth far more than an error page in a break room.
-    return new Response(JSON.stringify([]), { status: 200, headers: JSON_HEADERS });
+    // ⚠️ Answering [] here is what made a broken board indistinguishable from an
+    // empty one: the page saw 200 with a valid array, called itself LIVE, and
+    // threw every score away. A store we cannot reach is a 503, and the page
+    // falls back to its browser-only board and says so.
+    return new Response(JSON.stringify({ error: 'no blob store', detail: String(err && err.message || err) }),
+      { status: 503, headers: JSON_HEADERS });
   }
 
   if (request.method === 'GET') {
@@ -92,7 +95,8 @@ export default async (request) => {
       const raw = await store.get(KEY, { type: 'json' });
       return new Response(JSON.stringify(clean(raw)), { status: 200, headers: JSON_HEADERS });
     } catch (err) {
-      return new Response(JSON.stringify([]), { status: 200, headers: JSON_HEADERS });
+      return new Response(JSON.stringify({ error: 'read failed', detail: String(err && err.message || err) }),
+        { status: 503, headers: JSON_HEADERS });
     }
   }
 
@@ -132,11 +136,27 @@ export default async (request) => {
     try {
       await store.setJSON(KEY, next);
     } catch (err) {
-      // The board is already computed; hand it back so the page can show where
-      // the run placed even though it wasn't kept.
-      return new Response(JSON.stringify(next), { status: 200, headers: JSON_HEADERS });
+      return new Response(JSON.stringify({ error: 'write failed', detail: String(err && err.message || err) }),
+        { status: 500, headers: JSON_HEADERS });
     }
-    return new Response(JSON.stringify(next), { status: 200, headers: JSON_HEADERS });
+
+    // ⚠️ Read it back. `setJSON` resolving is not proof the score was kept —
+    // that is exactly how this board spent its first deploy reporting LIVE
+    // while persisting nothing at all. The same lesson as the FileCloud delete
+    // that returned 200 with the file still sitting there.
+    try {
+      const after = await store.get(KEY, { type: 'json' });
+      const kept = Array.isArray(after) && after.some(
+        (r) => r && r.name === row.name && r.who === row.who && r.when === row.when);
+      if (!kept) {
+        return new Response(JSON.stringify({ error: 'write did not stick', detail: 'read-back missing the row' }),
+          { status: 500, headers: JSON_HEADERS });
+      }
+      return new Response(JSON.stringify(clean(after)), { status: 200, headers: JSON_HEADERS });
+    } catch (err) {
+      return new Response(JSON.stringify({ error: 'verify failed', detail: String(err && err.message || err) }),
+        { status: 500, headers: JSON_HEADERS });
+    }
   }
 
   return new Response(JSON.stringify({ error: 'method not allowed' }), { status: 405, headers: JSON_HEADERS });
