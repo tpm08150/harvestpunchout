@@ -326,7 +326,16 @@ const Snd = (() => {
     return ac;
   }
 
-  function resume() { const a = ensure(); if (a && a.state === 'suspended') a.play ? 0 : a.resume(); }
+  function resume() { const a = ensure(); if (a && a.state === 'suspended') a.resume(); }
+
+  // Suspending the whole context is the only thing that reliably stops every
+  // voice at once — the crowd is a looping buffer with no natural end, so
+  // ducking gains leaves it running for as long as the page is open.
+  function suspend() { if (ac && ac.state === 'running') ac.suspend(); }
+  function wake() {
+    if (!ac) return;
+    if (ac.state === 'suspended') ac.resume().then(() => { nextNote = ac.currentTime + 0.05; });
+  }
 
   function blip(freq, dur, type, gain, slideTo) {
     if (!on) return; const a = ensure(); if (!a) return;
@@ -398,6 +407,7 @@ const Snd = (() => {
     toggleMusic() { music = !music; const a = ensure(); if (a) mus.gain.setTargetAtTime(music && on ? 0.22 : 0, a.currentTime, 0.1); return music; },
     duckMusic(v) { const a = ensure(); if (a) mus.gain.setTargetAtTime(music && on ? v : 0, a.currentTime, 0.2); },
     crowd(level) { const a = ensure(); if (a && crowdGain) crowdGain.gain.setTargetAtTime(level, a.currentTime, 0.4); },
+    suspend, wake,
     bell() { blip(880, 0.5, 'sine', 0.3); blip(1320, 0.6, 'sine', 0.18); },
     land() { noise(0.10, 340, 0.42, 0.8); blip(150, 0.07, 'square', 0.14, 60); },
     big()  { noise(0.20, 190, 0.60, 0.7); blip(90, 0.16, 'square', 0.22, 40); },
@@ -623,6 +633,7 @@ function advance() {
   if (G.screen === 'title') {
     G.screen = 'select';
     Snd.kick();
+    Snd.crowd(0);
   } else if (G.screen === 'select') {
     // Starting from the top of the ladder starts a circuit run; picking up
     // mid-ladder does not, because a circuit time has to cover all seven.
@@ -638,15 +649,19 @@ function advance() {
       G.screen = 'select';
     }
     G.fight = null;
+    Snd.crowd(0);          // off a fight screen there is no crowd to hear
   } else if (G.screen === 'done') {
     G.screen = 'select';
+    Snd.crowd(0);
   }
 }
 
 function togglePause() {
   if (G.screen !== 'fight') return;
   G.paused = !G.paused;
-  Snd.duckMusic(G.paused ? 0.05 : 0.22);
+  // Suspend rather than duck. Paused used to leave the crowd and the engine of
+  // the music running, which is the same complaint as a backgrounded tab.
+  if (G.paused) Snd.suspend(); else Snd.wake();
 }
 
 /* ============================ fight logic ================================ */
@@ -1726,10 +1741,21 @@ function frame(now) {
   requestAnimationFrame(frame);
 }
 
-/* A backgrounded tab should not be losing a round it cannot see. */
+/* A backgrounded tab should not be losing a round it cannot see — and it should
+   not be making a sound either. The crowd is a looping buffer that runs from the
+   first click to the end of the page's life, so "hidden" has to suspend the
+   whole audio context, not just stop the music. */
 document.addEventListener('visibilitychange', () => {
-  if (document.hidden && G.screen === 'fight' && !G.paused) togglePause();
+  if (document.hidden) {
+    if (G.screen === 'fight') G.paused = true;
+    Snd.suspend();          // unconditional: every screen, paused or not
+  } else if (!G.paused) {
+    Snd.wake();
+  }
 });
+// Closing the tab, or the Hub navigating away from the Arcade, unmounts this
+// without a visibilitychange in some browsers.
+addEventListener('pagehide', () => Snd.suspend());
 
 setProgress(progress());
 loadBoard();

@@ -119,6 +119,14 @@ by a lookahead scheduler, the same shape both other games use, because
 ⚠️ The audio clock does not advance while suspended, so the scheduler is rebased
 on resume. Without that it dumps every sixteenth it missed at once.
 
+⚠️ **The crowd is a looping buffer with no natural end**, so it runs from the
+first click to the end of the page's life unless something stops it. Ducking
+gains is not enough — the whole `AudioContext` is **suspended** when the page is
+hidden, on `pagehide`, and on pause, and the crowd is silenced on every screen
+that is not a fight. This game sits in an iframe inside the Hub, so a tab left
+open in the background humming crowd noise is a real thing that happened.
+Verified: hidden → `suspended`, visible → `running`, `pagehide` → `suspended`.
+
 ## Names
 
 Three initials, cabinet style, the same as the other two. Enforced in the page
