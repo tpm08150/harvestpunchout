@@ -59,6 +59,16 @@
   .pad .star{border-color:var(--tape);color:var(--tape)}
   .pad .star:active,.pad .star.on{background:var(--tape);color:var(--house)}
 
+  .soundbtn{
+    font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;
+    letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+    background:transparent;color:var(--truss);
+    border:1px solid rgba(139,148,163,.5);border-radius:3px;
+    padding:3px 8px;min-height:26px;touch-action:manipulation;
+  }
+  .soundbtn.on{color:var(--tape);border-color:var(--tape)}
+  .soundbtn.off{opacity:.5}
+
   .legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px;
     font-size:10.5px;text-transform:uppercase;letter-spacing:1.2px;opacity:.65}
   .legend b{color:var(--xlr);font-weight:600}
@@ -116,6 +126,7 @@
     <div class="meters">
       <span>Board <b id="mBoard">…</b></span>
       <span>Beaten <b id="mBeaten">0/7</b></span>
+      <button id="bSound" class="soundbtn" type="button">♪ Music</button>
     </div>
   </header>
 
@@ -432,13 +443,20 @@ const Snd = (() => {
   // Suspending the whole context is the only thing that reliably stops every
   // voice at once — the crowd is a looping buffer with no natural end, so
   // ducking gains leaves it running for as long as the page is open.
-  function suspend() { if (ac && ac.state === 'running') ac.suspend(); }
+  function suspend() {
+    // Stop the lookahead scheduler too. Left running it keeps queueing notes
+    // against a clock that is not moving, and it is a timer nobody ever cleared.
+    if (timer) { clearInterval(timer); timer = null; }
+    if (ac && ac.state === 'running') ac.suspend();
+  }
   function wake() {
     if (!ac || hidden()) return;
     if (ac.state === 'suspended') {
       const p = ac.resume();
       if (p && p.then) p.then(() => { nextNote = ac.currentTime + 0.05; }, () => {});
     }
+    if (nextNote < ac.currentTime) nextNote = ac.currentTime + 0.05;
+    if (!timer && music && on) timer = setInterval(schedule, 25);
   }
 
   function blip(freq, dur, type, gain, slideTo) {
@@ -509,7 +527,21 @@ const Snd = (() => {
       if (!timer) timer = setInterval(schedule, 25);
       mus.gain.setTargetAtTime(music && on ? 0.22 : 0.0, a.currentTime, 0.3);
     },
-    toggleMusic() { music = !music; const a = ensure(); if (a) mus.gain.setTargetAtTime(music && on ? 0.22 : 0, a.currentTime, 0.1); return music; },
+    setMusic(v) {
+      music = !!v;
+      // Deliberately does NOT call ensure(). Recording a preference at page
+      // load must not bring an AudioContext into existence before anyone has
+      // asked for a sound; kick() applies it when audio actually starts.
+      const a = ac;
+      if (a) {
+        mus.gain.setTargetAtTime(music && on ? 0.22 : 0, a.currentTime, 0.1);
+        if (music && !timer && !hidden()) timer = setInterval(schedule, 25);
+        if (!music && timer) { clearInterval(timer); timer = null; }
+      }
+      return music;
+    },
+    toggleMusic() { return this.setMusic(!music); },
+    musicOn() { return music; },
     duckMusic(v) { const a = ensure(); if (a) mus.gain.setTargetAtTime(music && on ? v : 0, a.currentTime, 0.2); },
     crowd(level) { const a = ensure(); if (a && crowdGain) crowdGain.gain.setTargetAtTime(level, a.currentTime, 0.4); },
     suspend, wake,
@@ -648,7 +680,7 @@ const typing = (e) => {
 addEventListener('keydown', (e) => {
   if (typing(e)) return;
   Snd.resume();
-  if (e.code === 'KeyM') { Snd.toggleMusic(); e.preventDefault(); return; }
+  if (e.code === 'KeyM') { syncSound(Snd.toggleMusic()); e.preventDefault(); return; }
   if (e.code === 'KeyP') { togglePause(); e.preventDefault(); return; }
   // Anything else while paused simply un-pauses. Being stuck behind one
   // undiscoverable key is what made this look broken rather than paused.
@@ -2412,6 +2444,34 @@ document.addEventListener('visibilitychange', () => {
 // Closing the tab, or the Hub navigating away from the Arcade, unmounts this
 // without a visibilitychange in some browsers.
 addEventListener('pagehide', () => Snd.suspend());
+
+/* ⚠️ Losing FOCUS is the signal that actually matters, and it was missing.
+   `document.hidden` is false for a window that is merely behind another one, or
+   on a second monitor, or simply not the frontmost app — so a game left open in
+   any of those states carried on playing to nobody, and hiding the tab was the
+   only thing that ever stopped it. If this window does not have focus, nobody
+   is playing it. */
+addEventListener('blur', () => Snd.suspend());
+addEventListener('focus', () => { if (!document.hidden && !G.paused) Snd.wake(); });
+
+/* The music control, remembered. Somebody hunting for which tab is making a
+   noise should not have to know that M is the shortcut. */
+const soundBtn = document.getElementById('bSound');
+const MUSIC_KEY = 'harvest-punchout-music';
+function syncSound(isOn) {
+  soundBtn.textContent = isOn ? '♪ Music on' : '♪ Music off';
+  soundBtn.classList.toggle('on', isOn);
+  soundBtn.classList.toggle('off', !isOn);
+  soundBtn.setAttribute('aria-pressed', String(isOn));
+  try { localStorage.setItem(MUSIC_KEY, isOn ? '1' : '0'); } catch (err) { /* private mode */ }
+}
+soundBtn.addEventListener('click', () => { Snd.resume(); syncSound(Snd.toggleMusic()); });
+(() => {
+  let want = '1';
+  try { const v = localStorage.getItem(MUSIC_KEY); if (v !== null) want = v; } catch (err) { /* private mode */ }
+  Snd.setMusic(want === '1');
+  syncSound(want === '1');
+})();
 
 /* ---------------------------------------------------------------------------
    ?faces — a contact sheet of all seven against every expression and a damaged

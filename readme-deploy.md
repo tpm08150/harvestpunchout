@@ -211,8 +211,22 @@ a reload. The circuit run itself is not — quitting halfway voids that run.
 
 ## Sound
 
-Generated from oscillators, nothing to fetch. **M** toggles the walk-out loop;
-effects stay on either way. Notes are queued onto the audio clock ~120ms early
+Generated from oscillators, nothing to fetch. There is a **♪ Music** button in
+the header, remembered across visits, and **M** does the same thing; effects
+stay on either way.
+
+⚠️ **The page goes silent when it does not have focus.** `document.hidden` is
+the obvious signal and it is not enough: it is **false** for a window sitting
+behind another window, on a second monitor, or simply not the frontmost app —
+which is exactly the state people describe as "it is playing in the
+background". Hiding the tab was the only thing that ever stopped it. `blur`
+suspends the whole `AudioContext` and `focus` resumes it (only if the page is
+also not hidden, and not paused). If this window does not have focus, nobody is
+playing it.
+
+⚠️ The music scheduler's `setInterval` is cleared on suspend and restarted on
+wake. Left running it keeps queueing notes against a clock that is not moving,
+and it was a timer nothing ever cleared. Notes are queued onto the audio clock ~120ms early
 by a lookahead scheduler, the same shape both other games use, because
 `setInterval` is nowhere near accurate enough to place a note on a beat.
 
