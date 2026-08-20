@@ -200,7 +200,7 @@ const M = {
 
 const ROSTER = [
   {
-    id:'wooten', nick:'FIRST CALL', name:'James Wooten', title:'Production Manager',
+    id:'wooten', nick:'CALL TIME', name:'James Wooten', title:'Production Manager',
     corner:'#1F6FEB',
     line:'Everything shows on his face a full second early. That is the lesson.',
     look:{
@@ -209,7 +209,7 @@ const ROSTER = [
       // Narrow face, pointed chin, little cheek — the leanest of the seven.
       face:{ w:0.95, jaw:0.85, chin:0.66, cheek:0.30, chins:0 },
       // Tight at the sides, height on top swept up and back off a hard part.
-      crop:{ style:'undercut', vol:1.18, part:1, temples:0.10, overEar:0 },
+      crop:{ style:'undercut', vol:1.18, part:1, temples:0.10, overEar:0, hairline:0.3 },
       brow:{ th:1.05, angle:0.05, gap:1.0 },
       beard:{ type:'shadow', len:0 },
       glasses:null,
@@ -230,7 +230,7 @@ const ROSTER = [
       // Round and full — heavy cheeks, soft jaw, a suggestion of a second chin.
       face:{ w:1.11, jaw:1.06, chin:0.28, cheek:0.88, chins:0.38 },
       // A lot of hair, high at the front and swept over.
-      crop:{ style:'sweep', vol:1.34, part:-1, temples:0, overEar:0.30 },
+      crop:{ style:'sweep', vol:1.34, part:-1, temples:0, overEar:0.30, hairline:-1.4 },
       brow:{ th:1.0, angle:0.10, gap:1.0 },
       beard:{ type:'none', len:0 },
       glasses:null,
@@ -250,7 +250,7 @@ const ROSTER = [
       trunk:'#3FBF8F', belt:'#1B5B44', glove:'#8B4A2B',
       face:{ w:1.00, jaw:0.94, chin:0.42, cheek:0.48, chins:0 },
       // Side-parted, wavy, long enough to cover the ears.
-      crop:{ style:'part', vol:1.08, part:-1, temples:0, overEar:0.85 },
+      crop:{ style:'part', vol:1.08, part:-1, temples:0, overEar:0.85, hairline:-0.4 },
       brow:{ th:1.10, angle:0.06, gap:1.0 },
       // The beard is the whole silhouette: chest-length, widening as it falls.
       beard:{ type:'long', len:19, col:'#4A3323', flare:1.02 },
@@ -269,15 +269,15 @@ const ROSTER = [
     corner:'#E0552F',
     line:'Slow, and it will not matter once. Do not stand in front of the uppercut.',
     look:{
-      skin:'#F0C4A0', hair:'#C6C1B8', build:1.32, seed:3,
+      skin:'#F0C4A0', hair:'#A9603A', build:1.32, seed:3,
       trunk:'#5A5F66', belt:'#2C3036', glove:'#E0552F',
       // The widest face here, full cheeks and a real double chin.
       face:{ w:1.24, jaw:1.16, chin:0.26, cheek:0.96, chins:0.72 },
-      // Bald on top, cropped grey round the sides — a horseshoe, not a cap.
+      // Bald on top, reddish hair round the sides — a horseshoe, not a cap.
       crop:{ style:'bald', vol:0, part:0, temples:1, overEar:0 },
       brow:{ th:1.15, angle:0.02, gap:1.05 },
-      // Moustache and chin joined into a short, neat circle beard, grey-white.
-      beard:{ type:'circle', len:9, col:'#CFCAC1' },
+      // A goatee: moustache and chin, reddish and sun-faded lighter than his hair.
+      beard:{ type:'goatee', len:9, col:'#BC7A4C' },
       // Thick dark rectangles.
       glasses:{ shape:'rect', w:1.00, h:0.92, frame:'#2B3038', th:1.35, tint:0.06 },
       ear:{ studs:false },
@@ -296,10 +296,10 @@ const ROSTER = [
       trunk:'#7B4BD1', belt:'#3A2266', glove:'#2FBF7F',
       face:{ w:1.10, jaw:1.02, chin:0.34, cheek:0.82, chins:0.30 },
       // Short, and going back at the temples.
-      crop:{ style:'short', vol:0.92, part:1, temples:0.35, overEar:0 },
+      crop:{ style:'short', vol:0.92, part:1, temples:0.30, overEar:0, hairline:0.6 },
       brow:{ th:1.1, angle:0.08, gap:1.0 },
-      // Thick, jaw-covering, well kept — full but nothing like Casey's.
-      beard:{ type:'full', len:12, col:'#33261C', flare:0.90 },
+      // Short and kept close to the jaw.
+      beard:{ type:'short', len:7, col:'#33261C', flare:0.86 },
       glasses:null,
       ear:{ studs:false },
       nose:{ ring:null, w:1.05, len:0.95 },
@@ -309,17 +309,17 @@ const ROSTER = [
             moves:[ M.jab(360,6), M.hookL(460,10), M.hookR(460,10), M.low(480,11), M.feint(500) ] },
   },
   {
-    id:'morton', nick:'OVERTIME', name:'Tyler Morton', title:'Chief Operations Officer',
+    id:'morton', nick:'THE FREIGHT TRAIN', name:'Tyler Morton', title:'Chief Operations Officer',
     corner:'#8BC542',
     line:'Fine for two rounds. Hurt him and he gets faster, not slower.',
     look:{
       skin:'#F2CBA8', hair:'#3B2A1D', build:1.06, seed:5,
       trunk:'#8BC542', belt:'#3F6B15', glove:'#1B1F24',
       face:{ w:1.04, jaw:0.98, chin:0.40, cheek:0.66, chins:0.20 },
-      crop:{ style:'wave', vol:1.18, part:1, temples:0.15, overEar:0.10 },
+      crop:{ style:'wave', vol:1.18, part:1, temples:0.15, overEar:0.10, hairline:0.2 },
       brow:{ th:1.0, angle:0.10, gap:1.0 },
-      // More than stubble, well short of a full beard.
-      beard:{ type:'short', len:5, col:'#3B2A1D', flare:0.84 },
+      // Trimmed close — more than stubble, a long way short of a beard.
+      beard:{ type:'short', len:3, col:'#43301F', flare:0.78 },
       glasses:null,
       ear:{ studs:false },
       nose:{ ring:null, w:1.0, len:1.0 },
@@ -337,7 +337,7 @@ const ROSTER = [
       trunk:'#D4AF37', belt:'#6E5714', glove:'#B22222',
       face:{ w:1.04, jaw:0.96, chin:0.46, cheek:0.58, chins:0.15 },
       // Long, and pulled back off the face rather than hanging.
-      crop:{ style:'back', vol:1.12, part:0, temples:0, overEar:0.20 },
+      crop:{ style:'back', vol:1.12, part:0, temples:0, overEar:0.20, hairline:0.5 },
       brow:{ th:1.05, angle:0.08, gap:1.0 },
       // Full, medium-long, and it comes to a point.
       beard:{ type:'full', len:15, col:'#33251A', flare:0.94, point:1 },
@@ -1433,6 +1433,22 @@ function drawHead(x, y, s, look, mood, t, fx) {
     cx.fill();
   };
 
+  /* ⚠️ Put a forehead back.
+     The hair mass is drawn as a cap over the whole skull, which took the
+     hairline down to about y=-2.6 — BELOW the eyebrows at roughly -6. Everyone
+     came out with no forehead at all. This paints skin back in from the
+     hairline down, narrower than the head so hair still shows at the temples,
+     and it is called after each style's mass but before its fringe, so a
+     fringe still falls over the forehead rather than being erased by it.
+     `crop.hairline` raises it (a receding hairline) or lowers it (a lot of
+     hair worn low). */
+  const forehead = () => {
+    cx.fillStyle = skin;
+    cx.beginPath();
+    cx.ellipse(px(0), py(-1.4), 8.6 * s * fw, (7.1 + (C.hairline || 0)) * s, 0, Math.PI, Math.PI * 2);
+    cx.fill();
+  };
+
   if (C.style === 'bald') {
     // Horseshoe: cropped round the sides and back, bare on top.
     cx.fillStyle = hair;
@@ -1460,7 +1476,8 @@ function drawHead(x, y, s, look, mood, t, fx) {
     cx.bezierCurveTo(...P2(-8.4, capTop - 2), ...P2(8.6, capTop - 2.6), ...P2(10.2, -9.2));
     cx.bezierCurveTo(...P2(5.6, -12.4), ...P2(-4.6, -12.8), ...P2(-9.4, -8.6));
     cx.fill();
-    cap(9.9, 7.6 * vol, -6.4, hair);
+    cap(9.9, 9.4 * vol, -6.4, hair);
+    forehead();
     // the swept quiff at the front
     cx.globalAlpha = 0.35; cx.fillStyle = shade(hair, 26);
     cx.beginPath();
@@ -1470,7 +1487,8 @@ function drawHead(x, y, s, look, mood, t, fx) {
     cx.fill(); cx.globalAlpha = 1;
   } else if (C.style === 'sweep') {
     // A lot of hair, high at the front and pushed across.
-    cap(ck + 1.4, 12.4 * vol, -2.6, hair);
+    cap(ck + 1.4, 14.6 * vol, -2.6, hair);
+    forehead();
     cx.fillStyle = hair;
     cx.beginPath();
     cx.ellipse(px(part * -3.6), py(-12.6), 7.8 * s, 5.0 * s, part * -0.34, 0, 7);
@@ -1480,7 +1498,8 @@ function drawHead(x, y, s, look, mood, t, fx) {
     cx.globalAlpha = 1;
   } else if (C.style === 'part') {
     // Side-parted and wavy, long enough to cover the ears.
-    cap(ck + 1.0, 12.2 * vol, -2.2, hair);
+    cap(ck + 1.0, 14.2 * vol, -2.2, hair);
+    forehead();
     cx.fillStyle = hair;
     const over = 4 + (C.overEar || 0) * 7;
     cx.fillRect(px(-ck - 1.0), py(-4), 3.6 * s, over * s);
@@ -1493,7 +1512,7 @@ function drawHead(x, y, s, look, mood, t, fx) {
     // Long, and pulled back off the face — the bundle sits behind the jaw.
     // Tied behind — one bundle, low and mostly hidden behind the jaw.
     ellipse(px(10.2), py(2.8), 3.3 * s, 5.0 * s, shade(hair, -14));
-    cap(ck + 0.4, 11.8 * vol, -2.0, hair);
+    cap(ck + 0.4, 13.6 * vol, -2.0, hair);
     cx.globalAlpha = 0.34; cx.strokeStyle = shade(hair, -42); cx.lineWidth = 1.1 * s;
     for (let i = -3; i <= 3; i++) {
       cx.beginPath();
@@ -1502,24 +1521,27 @@ function drawHead(x, y, s, look, mood, t, fx) {
       cx.stroke();
     }
     cx.globalAlpha = 1;
+    forehead();
   } else if (C.style === 'wave') {
-    cap(ck + 0.6, 11.6 * vol, -3.0, hair);
+    cap(ck + 0.6, 13.6 * vol, -3.0, hair);
+    forehead();
     cx.fillStyle = hair;
     cx.beginPath(); cx.ellipse(px(4.6), py(-11.8), 6.2 * s, 4.2 * s, 0.40, 0, 7); cx.fill();
     cx.beginPath(); cx.ellipse(px(-4.2), py(-12.2), 5.0 * s, 3.4 * s, -0.30, 0, 7); cx.fill();
   } else { // short
-    cap(ck + 0.2, 11.4 * vol, -2.6, hair);
+    cap(ck + 0.2, 13.2 * vol, -2.6, hair);
+    forehead();
   }
 
   // Receding temples — cut two notches of skin back into the hairline.
   if (C.temples > 0 && C.style !== 'bald') {
-    // Cut the notch INTO the hairline. Placed higher it just floats as two
-    // skin-coloured dots in the middle of the hair, which is what it did.
-    const hairline = -2.4 - (C.style === 'sweep' || C.style === 'part' ? 0.6 : 0);
+    // Cut the notches either side of the forehead, which is where a hairline
+    // actually recedes. They have to sit OUTSIDE the forehead shape or they do
+    // nothing at all.
     cx.fillStyle = skin;
     [-1, 1].forEach(d => {
       cx.beginPath();
-      cx.ellipse(px(d * 8.1), py(hairline - 1.6), 3.0 * s * C.temples, 3.1 * s * C.temples, d * 0.42, 0, 7);
+      cx.ellipse(px(d * 8.9), py(-7.2), 3.1 * s * C.temples, 3.4 * s * C.temples, d * 0.5, 0, 7);
       cx.fill();
     });
   }
@@ -1636,11 +1658,23 @@ function drawHead(x, y, s, look, mood, t, fx) {
   } else if (B.type !== 'none') {
     const len = B.len || 10, flare = B.flare || 1, point = B.point || 0;
     cx.fillStyle = beardCol;
-    if (B.type === 'circle') {
-      // Moustache and chin joined in a ring round the mouth, nothing on the cheeks.
+    if (B.type === 'circle' || B.type === 'goatee') {
+      // Chin patch, with the moustache added separately below. A goatee is
+      // narrower and sits lower than a circle beard — it does not reach the
+      // jaw corners, which is the whole difference between the two.
+      const narrow = B.type === 'goatee' ? 0.82 : 1;
       cx.beginPath();
-      cx.ellipse(px(0), py(9.0 + jawOpen * 0.4), 5.1 * s, (4.6 + len * 0.15) * s, 0, 0, 7);
+      cx.ellipse(px(0), py((B.type === 'goatee' ? 10.4 : 9.0) + jawOpen * 0.4),
+                 5.1 * s * narrow, (4.6 + len * 0.15) * s * narrow, 0, 0, 7);
       cx.fill();
+      // the two sides running up from the chin to the moustache
+      if (B.type === 'goatee') {
+        cx.beginPath();
+        cx.moveTo(...P2(-4.4, 6.6)); cx.quadraticCurveTo(...P2(-5.0, 10), ...P2(-3.4, 12.4));
+        cx.lineTo(...P2(3.4, 12.4)); cx.quadraticCurveTo(...P2(5.0, 10), ...P2(4.4, 6.6));
+        cx.quadraticCurveTo(...P2(0, 8.4), ...P2(-4.4, 6.6));
+        cx.fill();
+      }
       cx.globalAlpha = 1;
     } else {
       // Jaw-following: short, full and long are the same shape at three lengths,
@@ -2171,8 +2205,8 @@ function drawSelect(t) {
   drawHead(66, 84, 1.9, R.look, mood, t);
   cx.restore();
 
-  mono(R.nick, 66, 170, 11, locked ? '#8B94A3' : R.corner);
-  mono(R.name, 66, 183, 9.5, '#E8E337');
+  mono(R.nick, 66, 162, 11, locked ? '#8B94A3' : R.corner);
+  mono(R.name, 66, 175, 9.5, '#E8E337');
   // The title wraps: "Production and Warehouse Manager" is not a one-liner here.
   const tw = R.title.toUpperCase().split(' ');
   let ln = '', lines = [];
@@ -2182,7 +2216,7 @@ function drawSelect(t) {
     if (cx.measureText(test).width > 112 && ln) { lines.push(ln); ln = w2; } else ln = test;
   });
   if (ln) lines.push(ln);
-  lines.slice(0, 2).forEach((l, i) => mono(l, 66, 195 + i * 9, 7.5, 'rgba(139,148,163,.7)'));
+  lines.slice(0, 2).forEach((l, i) => mono(l, 66, 186 + i * 9, 7.5, 'rgba(139,148,163,.7)'));
 
   // Your record against him.
   const rows = rowsFor(R.id), best = rows[0];

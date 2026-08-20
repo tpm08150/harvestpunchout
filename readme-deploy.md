@@ -56,12 +56,12 @@ reorders the card, and nothing else knows the sequence.
 
 | # | Nickname | Who | What they do |
 | --- | --- | --- | --- |
-| 1 | First Call | James Wooten | Telegraphs for 0.7s. One thing at a time. The tutorial. |
+| 1 | Call Time | James Wooten | Telegraphs for 0.7s. One thing at a time. The tutorial. |
 | 2 | Double Booked | Pete McKiernan | Throws in twos. Dodge the first and the second is already coming. |
 | 3 | The Long Haul | Casey Faircloth | Body shots you cannot block. First fighter who punishes a lazy guard. |
 | 4 | The Warehouse | Weston Smith | Slow, and it does not matter — the uppercut is 22 and unblockable. |
 | 5 | The Firewall | Tyler Nissen | Guards 45% of the time and feints. Go to the body. |
-| 6 | Overtime | Tyler Morton | Threes, and he gets *faster* below 40% health, not slower. |
+| 6 | The Freight Train | Tyler Morton | Threes, and he gets *faster* below 40% health, not slower. |
 | 7 | The Headliner | Josh Koan | Everything above, quicker, plus an uppercut. |
 
 Each one is a `look` (the caricature) and a `fight` (the behaviour), kept apart
@@ -128,6 +128,22 @@ then colour in the cheeks, then a cut over the brow that runs, plus sweat. It is
 cumulative across the fight rather than a read of the current health bar —
 health resets on every knockdown, and a man who has been down twice should not
 look fresh again.
+
+### The hairline
+
+⚠️ **The hair is drawn as a cap over the whole skull, so something has to put a
+forehead back.** Without it the hairline lands at about y=-2.6 — *below* the
+eyebrows at -6 — and every one of the seven comes out with no forehead at all.
+`forehead()` paints skin back from the hairline down, narrower than the head so
+hair still shows at the temples, and it is called after each style's mass but
+before its fringe, so a fringe still falls over the forehead instead of being
+erased by it. `crop.hairline` raises it for a receding one or lowers it for a
+lot of hair worn low.
+
+⚠️ And it is a **balance**, not a single number: cutting the forehead in without
+also raising the hair mass leaves a thin band on top and everybody looks like
+they are going bald. The cap heights and the forehead height were tuned
+together against the contact sheet.
 
 ### ?faces
 
