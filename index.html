@@ -301,13 +301,15 @@ const ROUNDS = 3, ROUND_MS = 60000, REST_MS = 4200, COUNT_MS = 9000;
    frame. Out Run's notes on that hold here: spawning nodes at 60fps gives you a
    click track and eventually stalls the context. */
 const Snd = (() => {
-  let ac = null, master = null, sfx = null, mus = null, on = true, music = true;
+  let ac = null, master = null, sfx = null, mus = null, on = true, music = true, dead = false;
   let crowd = null, crowdGain = null;
 
   function ensure() {
     if (ac) return ac;
+    if (dead) return null;
     const AC = window.AudioContext || window.webkitAudioContext;
     if (!AC) return null;
+    try {
     ac = new AC();
     master = ac.createGain(); master.gain.value = 0.9; master.connect(ac.destination);
     sfx = ac.createGain(); sfx.gain.value = 0.9; sfx.connect(master);
@@ -324,9 +326,21 @@ const Snd = (() => {
     crowd.connect(bp); bp.connect(crowdGain); crowdGain.connect(master);
     crowd.start();
     return ac;
+    } catch (err) {
+      // ⚠️ Audio must never be able to stop the game responding. `resume()` is
+      // called first thing on every click and every keypress, so anything
+      // thrown in here would take the input with it and the page would look
+      // dead to the touch. Give up on sound instead.
+      dead = true; ac = null;
+      return null;
+    }
   }
 
-  function resume() { const a = ensure(); if (a && a.state === 'suspended') a.resume(); }
+  function resume() {
+    const a = ensure();
+    if (!a || a.state !== 'suspended') return;
+    try { const p = a.resume(); if (p && p.catch) p.catch(() => {}); } catch (err) { /* autoplay policy */ }
+  }
 
   // Suspending the whole context is the only thing that reliably stops every
   // voice at once — the crowd is a looping buffer with no natural end, so
@@ -545,6 +559,9 @@ addEventListener('keydown', (e) => {
   Snd.resume();
   if (e.code === 'KeyM') { Snd.toggleMusic(); e.preventDefault(); return; }
   if (e.code === 'KeyP') { togglePause(); e.preventDefault(); return; }
+  // Anything else while paused simply un-pauses. Being stuck behind one
+  // undiscoverable key is what made this look broken rather than paused.
+  if (G.paused) { resumeIfPaused(); e.preventDefault(); return; }
   if (e.code === 'Enter') { advance(); e.preventDefault(); return; }
   const a = KEYMAP[e.code];
   if (!a) return;
@@ -568,7 +585,9 @@ document.querySelectorAll('.pad button').forEach(btn => {
   const act = btn.dataset.act;
   const down = (e) => {
     e.preventDefault();
+    try { window.focus(); } catch (err) { /* not embedded */ }
     Snd.resume();
+    if (resumeIfPaused()) return;
     if (act === 'block') { held.block = true; btn.classList.add('on'); }
     else if (act === 'dodgeL' || act === 'dodgeR') { held[act] = true; q(act); }
     else q(act);
@@ -586,7 +605,16 @@ document.querySelectorAll('.pad button').forEach(btn => {
   btn.addEventListener('contextmenu', (e) => e.preventDefault());
 });
 
-cv.addEventListener('pointerdown', (e) => { e.preventDefault(); Snd.resume(); if (G.screen !== 'fight') advance(); });
+cv.addEventListener('pointerdown', (e) => {
+  e.preventDefault();
+  // ⚠️ Embedded in the Hub's Arcade this page is a cross-origin iframe, and keys
+  // only reach it once it holds focus. preventDefault above stops the browser
+  // giving it focus by itself, so ask for it.
+  try { window.focus(); } catch (err) { /* not embedded, or refused */ }
+  Snd.resume();
+  if (resumeIfPaused()) return;   // a click is how most people will try to resume
+  if (G.screen !== 'fight') advance();
+});
 
 /* ============================ game state ================================= */
 const G = {
@@ -654,6 +682,15 @@ function advance() {
     G.screen = 'select';
     Snd.crowd(0);
   }
+}
+
+/** Resume from pause. Returns true if it actually did something, so callers can
+ *  swallow the interaction that resumed rather than also acting on it. */
+function resumeIfPaused() {
+  if (!G.paused) return false;
+  G.paused = false;
+  Snd.wake();
+  return true;
 }
 
 function togglePause() {
@@ -1735,7 +1772,8 @@ function frame(now) {
   if (G.paused) {
     cx.fillStyle = 'rgba(5,7,11,.75)'; cx.fillRect(0, 0, W, H);
     text('PAUSED', W / 2, 150, 24, '#E8E337');
-    mono('P TO CARRY ON', W / 2, 172, 10, '#8B94A3');
+    mono('CLICK, TAP OR PRESS ANY KEY TO CARRY ON', W / 2, 172, 9.5, '#8B94A3');
+    mono('(it pauses itself when you switch away)', W / 2, 188, 8, 'rgba(139,148,163,.6)');
   }
 
   requestAnimationFrame(frame);

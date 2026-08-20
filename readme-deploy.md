@@ -95,6 +95,20 @@ end of round three you have lost. You need the knockout.
 - **Three knockdowns is a TKO**, both ways. When you go down, mash Body/Face to
   get up — the bar drains, so it is a real ask rather than a wait.
 
+## Pausing
+
+It pauses itself when you switch away from the tab, and **any input brings it
+back** — a click, a tap, a pad button or any key.
+
+⚠️ That last part was a real bug, and it is worth not reintroducing. `G.paused`
+could originally only be cleared by the `P` key, while `visibilitychange` set it
+every time the tab was hidden mid-fight. So the sequence was: play a round,
+switch tab, come back, click the game — and nothing happened, because the canvas
+handler only advances menus (`G.screen !== 'fight'`) and the pad buttons feed an
+update loop that pausing had gated off. It reads as a dead page rather than a
+paused one, and it only bites on desktop because that is where the Hub embeds
+the game in an iframe rather than opening a tab.
+
 ## The boards
 
 Ten per opponent, plus a **circuit** board for the total time to put all seven
