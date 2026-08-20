@@ -73,6 +73,35 @@ lighter. Everything that makes a person recognisable is a flag on `look` — the
 undercut, the glasses, the beard length, the earrings — so a new fighter is one
 array entry and no new drawing code.
 
+## The card
+
+The roster screen. Seven names in a list told you nothing about who you were
+about to fight, so it now shows each one's face, what he does, and how you have
+done against him.
+
+- **Left**: his portrait, framed in his corner colour. It cycles from idle into
+  his **wind-up** every few seconds — standing still tells you nothing about
+  the one thing you actually have to read. Under it, nickname, name, title, and
+  whether you have beaten him plus the board's best time against him.
+- **Right**: a tale of the tape — SPEED, POWER, CHIN, GUARD out of five — then
+  what he does in words, then his line.
+- **Bottom**: all seven, numbered, with a green dot on the ones you have beaten.
+  `◀ ▶` walks the card, or tap a face.
+
+⚠️ **Everything on the right is derived from the fighter's own `fight` block**,
+never typed in beside it. SPEED is read off his *shortest* tell, POWER off his
+hardest move, CHIN off his health, GUARD off his guard chance; the "what he
+does" lines come from which moves he actually has. A second, hand-written
+description of a fighter is a second thing to keep in step, and it would start
+lying the first time a tell was retuned. Add a move and the card describes it
+with no other edit.
+
+**You can look at all seven, including the ones you have not unlocked** — the
+challenge here is execution, not information, and hiding the CEO's tape makes
+the screen worse. A locked fighter shows everything and simply cannot be
+selected: the bar says which fighter to beat first, and Enter, tap and the
+punch buttons all refuse.
+
 ## The faces
 
 Every face is drawn from one routine driven entirely by a `look` object. Seven

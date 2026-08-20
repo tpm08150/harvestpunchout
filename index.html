@@ -658,6 +658,10 @@ addEventListener('keydown', (e) => {
   if (!a) return;
   e.preventDefault();
   if (e.repeat) return;
+  if (G.screen === 'select' && (a === 'dodgeL' || a === 'dodgeR')) {
+    cardMove(a === 'dodgeL' ? -1 : 1);
+    return;
+  }
   if (a === 'block') { held.block = true; }
   else if (a === 'dodgeL' || a === 'dodgeR') { held[a] = true; q(a); }
   else q(a);
@@ -679,6 +683,10 @@ document.querySelectorAll('.pad button').forEach(btn => {
     try { window.focus(); } catch (err) { /* not embedded */ }
     Snd.resume();
     if (resumeIfPaused()) return;
+    if (G.screen === 'select' && (act === 'dodgeL' || act === 'dodgeR')) {
+      cardMove(act === 'dodgeL' ? -1 : 1);
+      return;
+    }
     if (act === 'block') { held.block = true; btn.classList.add('on'); }
     else if (act === 'dodgeL' || act === 'dodgeR') { held[act] = true; q(act); }
     else q(act);
@@ -704,6 +712,18 @@ cv.addEventListener('pointerdown', (e) => {
   try { window.focus(); } catch (err) { /* not embedded, or refused */ }
   Snd.resume();
   if (resumeIfPaused()) return;   // a click is how most people will try to resume
+
+  if (G.screen === 'select') {
+    const r = cv.getBoundingClientRect();
+    const mx = (e.clientX - r.left) * (cv.width / r.width);
+    const my = (e.clientY - r.top) * (cv.height / r.height);
+    const cell = cardCellAt(mx, my);
+    if (cell >= 0) { if (cell !== G.pick) { G.pick = cell; Snd.count(); } return; }
+    const F2 = CARD.fight;
+    if (mx >= F2.x && mx <= F2.x + F2.w && my >= F2.y && my <= F2.y + F2.h) { advance(); return; }
+    return;   // a tap on the card's own furniture is not a request to fight
+  }
+
   if (G.screen !== 'fight') advance();
 });
 
@@ -711,6 +731,7 @@ cv.addEventListener('pointerdown', (e) => {
 const G = {
   screen:'title',      // title | select | fight | result | done
   idx:0,               // who is next in the circuit
+  pick:0,              // who the card screen is showing (may be locked)
   fight:null,
   run:null,            // an in-progress circuit: {from, total, alive}
   paused:false,
@@ -721,6 +742,7 @@ const G = {
 
 setProgress(progress());
 G.idx = Math.min(progress(), ROSTER.length - 1);
+G.pick = G.idx;
 
 function newFight(i) {
   const R = ROSTER[i], F = R.fight;
@@ -754,6 +776,8 @@ function advance() {
     Snd.kick();
     Snd.crowd(0);
   } else if (G.screen === 'select') {
+    if (G.pick > progress()) { Snd.miss(); return; }   // locked: look, don't fight
+    G.idx = G.pick;
     // Starting from the top of the ladder starts a circuit run; picking up
     // mid-ladder does not, because a circuit time has to cover all seven.
     G.run = G.idx === 0 ? { total:0, alive:true } : null;
@@ -763,9 +787,9 @@ function advance() {
     const f = G.fight;
     if (f && f.result === 'win') {
       if (G.idx >= ROSTER.length - 1) { G.screen = 'done'; }
-      else { G.idx += 1; G.screen = 'select'; }
+      else { G.idx += 1; G.pick = G.idx; G.screen = 'select'; }
     } else {
-      G.screen = 'select';
+      G.pick = G.idx; G.screen = 'select';
     }
     G.fight = null;
     Snd.crowd(0);          // off a fight screen there is no crowd to hear
@@ -773,6 +797,17 @@ function advance() {
     G.screen = 'select';
     Snd.crowd(0);
   }
+}
+
+/** Move the card selection. Returns true if it consumed the input, so the
+ *  same key does not also start a fight. Wraps, and walks past nothing —
+ *  locked fighters are still worth looking at, which is the point of the
+ *  screen. */
+function cardMove(dir) {
+  if (G.screen !== 'select') return false;
+  G.pick = (G.pick + dir + ROSTER.length) % ROSTER.length;
+  Snd.count();
+  return true;
 }
 
 /** Resume from pause. Returns true if it actually did something, so callers can
@@ -2048,33 +2083,183 @@ function drawTitle(t) {
   mono('THREE ROUNDS. NO DECISION — WIN IT INSIDE THE DISTANCE.', W / 2, 274, 8.5, 'rgba(139,148,163,.6)');
 }
 
+/* ---------------------------------------------------------------------------
+   The card — the roster screen.
+
+   Seven names in a list told you nothing about who you were about to fight.
+   This shows each one's face, what he does, and how you have done against him.
+
+   Everything on the right is DERIVED from the fighter's own `fight` block
+   rather than typed in beside it. A second, hand-written description of a
+   fighter is a second thing to keep in step, and it would start lying the
+   first time a tell was retuned — the same reason nothing here joins on an
+   email address.
+------------------------------------------------------------------------- */
+
+/** Ratings out of five, read off the real numbers the fight uses. */
+function tape(R) {
+  const f = R.fight;
+  const clamp = (v) => Math.max(1, Math.min(5, Math.round(v)));
+  // Speed is the SHORTEST tell, not the average: the quickest thing he throws
+  // is what actually catches people out.
+  const quickest = Math.min(...f.moves.map(m => m.tell));
+  const hardest = Math.max(...f.moves.map(m => m.dmg));
+  return {
+    speed: clamp((640 - quickest) / 70),
+    power: clamp(hardest / 5.5),
+    chin: clamp((f.hp - 40) / 24),
+    guard: clamp(f.guard * 11),
+  };
+}
+
+/** What he does, in words, also derived from the moves themselves. */
+function traits(R) {
+  const f = R.fight, k = f.moves.map(m => m.k), out = [];
+  if (f.combo >= 3) out.push('Throws in threes — the first is bait');
+  else if (f.combo === 2) out.push('Never throws once');
+  if (k.includes('low')) out.push('Body shots you cannot block — move');
+  if (k.includes('upper')) out.push('Uppercut: unblockable, and it ends rounds');
+  if (k.includes('feint')) out.push('Feints — moving early is punished');
+  if (f.guard >= 0.40) out.push('Guards constantly — go to the body');
+  if (f.rally) out.push('Gets FASTER below ' + Math.round(f.rally.at * 100) + '% health');
+  if (!out.length) out.push('One thing at a time, and he shows you first');
+  return out.slice(0, 4);
+}
+
+// Geometry shared by the drawing and the tapping, so the two cannot disagree
+// about where a portrait is.
+const CARD = {
+  row: { y: 240, h: 56, x: 7, w: 58 },
+  fight: { x: 132, y: 198, w: 282, h: 22 },
+};
+
+function cardCellAt(mx, my) {
+  const r = CARD.row;
+  if (my < r.y || my > r.y + r.h) return -1;
+  const i = Math.floor((mx - r.x) / r.w);
+  return (i >= 0 && i < ROSTER.length && mx >= r.x) ? i : -1;
+}
+
 function drawSelect(t) {
   drawRing(t);
-  cx.fillStyle = 'rgba(5,7,11,.80)'; cx.fillRect(0, 0, W, H);
-  mono('THE CARD', W / 2, 26, 10, '#8B94A3');
+  cx.fillStyle = 'rgba(5,7,11,.88)'; cx.fillRect(0, 0, W, H);
 
   const beaten = progress();
-  ROSTER.forEach((R, i) => {
-    const y = 46 + i * 27;
-    const done = i < beaten, now = i === G.idx, locked = i > beaten;
-    cx.globalAlpha = locked ? 0.32 : 1;
-    if (now) { cx.fillStyle = 'rgba(232,227,55,.12)'; cx.fillRect(18, y - 14, W - 36, 24); }
-    circle(34, y - 3, 9, done ? '#3FBF8F' : (locked ? '#2A3038' : R.corner));
-    mono(String(i + 1), 34, y, 9, '#05070B');
-    mono(R.nick, 52, y - 5, 10, now ? '#E8E337' : (done ? '#3FBF8F' : '#8B94A3'), 'left');
-    mono(R.name, 52, y + 5, 8.5, 'rgba(139,148,163,.75)', 'left');
-    mono(R.title.toUpperCase(), W - 20, y, 7.5, 'rgba(139,148,163,.55)', 'right');
-    if (done) mono('BEATEN', W - 20, y - 8, 7.5, '#3FBF8F', 'right');
-    cx.globalAlpha = 1;
+  const pick = G.pick;
+  const R = ROSTER[pick];
+  const locked = pick > beaten;
+  const T = tape(R);
+
+  /* header */
+  mono('THE CARD', 8, 15, 10, '#8B94A3', 'left');
+  mono(`${Math.min(beaten, ROSTER.length)}/${ROSTER.length} BEATEN`, W - 8, 15, 9, '#E8E337', 'right');
+  cx.strokeStyle = 'rgba(139,148,163,.3)'; cx.lineWidth = 1;
+  cx.beginPath(); cx.moveTo(0, 21.5); cx.lineTo(W, 21.5); cx.stroke();
+
+  /* -- portrait ---------------------------------------------------------- */
+  cx.fillStyle = 'rgba(139,148,163,.06)'; cx.fillRect(4, 26, 124, 198);
+  cx.strokeStyle = locked ? 'rgba(139,148,163,.25)' : R.corner;
+  cx.lineWidth = 1.5; cx.strokeRect(4.5, 26.5, 123, 197);
+
+  // Demonstrate the tell: mostly idle, with his wind-up every few seconds.
+  // Standing still tells you nothing about the one thing you need to read.
+  const cyc = ((t / 1000) + pick * 0.7) % 4.0;
+  const mood = (cyc > 3.0 && cyc < 3.7) ? 'wind' : 'idle';
+
+  cx.save();
+  if (locked) cx.globalAlpha = 0.34;
+  drawHead(66, 84, 1.9, R.look, mood, t);
+  cx.restore();
+
+  mono(R.nick, 66, 170, 11, locked ? '#8B94A3' : R.corner);
+  mono(R.name, 66, 183, 9.5, '#E8E337');
+  // The title wraps: "Production and Warehouse Manager" is not a one-liner here.
+  const tw = R.title.toUpperCase().split(' ');
+  let ln = '', lines = [];
+  cx.font = "7.5px 'IBM Plex Mono', monospace";
+  tw.forEach(w2 => {
+    const test = ln ? ln + ' ' + w2 : w2;
+    if (cx.measureText(test).width > 112 && ln) { lines.push(ln); ln = w2; } else ln = test;
+  });
+  if (ln) lines.push(ln);
+  lines.slice(0, 2).forEach((l, i) => mono(l, 66, 195 + i * 9, 7.5, 'rgba(139,148,163,.7)'));
+
+  // Your record against him.
+  const rows = rowsFor(R.id), best = rows[0];
+  mono(pick < beaten ? 'BEATEN' : 'NOT BEATEN', 66, 208, 8.5, pick < beaten ? '#3FBF8F' : 'rgba(139,148,163,.55)');
+  mono(best ? `BEST ${fmt(best.time)} ${best.name}` : 'NO TIMES YET', 66, 218, 7.5, best ? '#E8E337' : 'rgba(139,148,163,.4)');
+
+  /* -- tale of the tape --------------------------------------------------- */
+  cx.fillStyle = 'rgba(139,148,163,.06)'; cx.fillRect(132, 26, 284, 198);
+  cx.strokeStyle = 'rgba(139,148,163,.22)'; cx.lineWidth = 1;
+  cx.strokeRect(132.5, 26.5, 283, 197);
+  mono('TALE OF THE TAPE', 140, 44, 9, '#8B94A3', 'left');
+  const meter = (label, val, y) => {
+    mono(label, 140, y, 8.5, 'rgba(139,148,163,.8)', 'left');
+    for (let i = 0; i < 5; i++) {
+      const on = i < val;
+      cx.fillStyle = on ? (val >= 4 ? '#FF4D3D' : (val >= 3 ? '#E8E337' : '#3FBF8F'))
+                        : 'rgba(139,148,163,.18)';
+      cx.fillRect(232 + i * 16, y - 7, 13, 8);
+    }
+  };
+  meter('SPEED', T.speed, 58);
+  meter('POWER', T.power, 72);
+  meter('CHIN', T.chin, 86);
+  meter('GUARD', T.guard, 100);
+
+  mono('WHAT HE DOES', 140, 120, 9, '#8B94A3', 'left');
+  traits(R).forEach((s2, i) => mono('· ' + s2, 140, 133 + i * 11, 8, '#3FBF8F', 'left'));
+
+  // His line, wrapped into the space that is left.
+  cx.font = "8px 'IBM Plex Mono', monospace";
+  const words = R.line.split(' ');
+  let l2 = '', ls = [];
+  words.forEach(w2 => {
+    const test = l2 ? l2 + ' ' + w2 : w2;
+    if (cx.measureText(test).width > 262 && l2) { ls.push(l2); l2 = w2; } else l2 = test;
+  });
+  if (l2) ls.push(l2);
+  ls.slice(0, 2).forEach((l, i) => mono('"' + l + (i === ls.length - 1 ? '"' : ''), 140, 174 + i * 10, 8, 'rgba(139,148,163,.75)', 'left'));
+
+  /* -- fight bar ---------------------------------------------------------- */
+  const F2 = CARD.fight;
+  if (locked) {
+    cx.fillStyle = 'rgba(139,148,163,.08)'; cx.fillRect(F2.x, F2.y, F2.w, F2.h);
+    mono(`LOCKED — BEAT ${ROSTER[beaten] ? ROSTER[beaten].nick : ''} FIRST`,
+         F2.x + F2.w / 2, F2.y + 15, 8.5, 'rgba(139,148,163,.7)');
+  } else {
+    cx.fillStyle = Math.floor(t / 500) % 2 === 0 ? 'rgba(232,227,55,.20)' : 'rgba(232,227,55,.10)';
+    cx.fillRect(F2.x, F2.y, F2.w, F2.h);
+    cx.strokeStyle = '#E8E337'; cx.lineWidth = 1; cx.strokeRect(F2.x + .5, F2.y + .5, F2.w - 1, F2.h - 1);
+    mono(`FIGHT ${R.nick}  —  ENTER OR TAP`, F2.x + F2.w / 2, F2.y + 15, 8.5, '#E8E337');
+  }
+
+  /* -- the row of seven --------------------------------------------------- */
+  const r = CARD.row;
+  ROSTER.forEach((f3, i) => {
+    const cxp = r.x + i * r.w + r.w / 2;
+    const on = i === pick, done = i < beaten, lk = i > beaten;
+    if (on) {
+      cx.fillStyle = 'rgba(232,227,55,.14)'; cx.fillRect(r.x + i * r.w, r.y, r.w, r.h);
+      cx.strokeStyle = '#E8E337'; cx.lineWidth = 1;
+      cx.strokeRect(r.x + i * r.w + .5, r.y + .5, r.w - 1, r.h - 1);
+    }
+    cx.save();
+    cx.globalAlpha = lk ? 0.30 : (on ? 1 : 0.72);
+    // Clip so a long beard cannot spill out of its cell into the next man's.
+    cx.beginPath(); cx.rect(r.x + i * r.w, r.y, r.w, r.h - 12); cx.clip();
+    drawHead(cxp, r.y + 22, 0.90, f3.look, 'idle', t + i * 900);
+    cx.restore();
+    mono(f3.name.split(' ').pop().toUpperCase(), cxp, r.y + r.h - 3, 6.2,
+         done ? '#3FBF8F' : (on ? '#E8E337' : 'rgba(139,148,163,.6)'));
+    mono(String(i + 1), r.x + i * r.w + 6, r.y + 10, 7, 'rgba(139,148,163,.5)', 'left');
+    if (done) circle(r.x + i * r.w + r.w - 7, r.y + 7, 3, '#3FBF8F');
   });
 
-  const next = ROSTER[G.idx];
-  if (Math.floor(t / 500) % 2 === 0) {
-    mono(`ENTER OR TAP — FIGHT ${next.nick}`, W / 2, 258, 10, '#E8E337');
-  }
-  mono(G.idx === 0 ? 'STARTING FROM THE TOP — THIS RUN COUNTS FOR THE CIRCUIT'
-                   : 'PICKING UP MID-CARD — NO CIRCUIT TIME FROM HERE',
-       W / 2, 276, 8, 'rgba(139,148,163,.6)');
+  mono(pick === 0 ? '◀ ▶ TO LOOK · FROM THE TOP, SO THIS RUN COUNTS FOR THE CIRCUIT'
+                  : '◀ ▶ TO LOOK THROUGH THE CARD · TAP A FACE BELOW',
+       W / 2, 234, 7, 'rgba(139,148,163,.55)');
 }
 
 function drawResult(f, t) {
