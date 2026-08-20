@@ -73,6 +73,47 @@ lighter. Everything that makes a person recognisable is a flag on `look` — the
 undercut, the glasses, the beard length, the earrings — so a new fighter is one
 array entry and no new drawing code.
 
+## The faces
+
+Every face is drawn from one routine driven entirely by a `look` object. Seven
+near-identical draw functions would drift the moment one of them got a fix, so
+there is one, and everything that makes a person recognisable is a parameter:
+face width, jaw, chin, cheek, double chin, hair style and volume, receding
+temples, beard type/length/flare, glasses shape/size/frame, ear studs or hoops,
+a nostril ring. Casey is not "the one with glasses" — he is a 1.10-wide thin
+metal rectangle and a 19-long beard.
+
+`look` (the likeness) and `fight` (the behaviour) stay separate on purpose:
+changing somebody's hair must never change how hard they hit.
+
+**Expressions** run off `mood`, and the wind-up is deliberately the loudest:
+brows drop and pull in, the jaw opens into a shout, the nose wrinkles. Getting
+hit screws the eyes shut, stun draws spirals, and a fighter on the canvas gets
+flat crosses — alert eyes on a man lying down read as a man having a lie-down.
+They blink on their own clocks so seven of them on one screen never blink in
+unison, and they breathe faster the more damage they have taken.
+
+**Damage shows on the face**, which is how Punch-Out told you a fight was going
+and it is far more readable than watching a bar: swelling under the eyes first,
+then colour in the cheeks, then a cut over the brow that runs, plus sweat. It is
+cumulative across the fight rather than a read of the current health bar —
+health resets on every knockdown, and a man who has been down twice should not
+look fresh again.
+
+### ?faces
+
+`?faces` renders a contact sheet of all seven against every expression plus a
+damaged pass. `?faces&s=1.7` renders it at the size the ring actually draws a
+head, which is the only scale that matters — detail that reads only at 3x is
+decoration. Tuning a face by playing seven fights to reach it is how faces end
+up untuned. Not linked from anywhere.
+
+Three things found by rendering that sheet rather than by reading the code: the
+beards started at the cheekbone and flared wider than the skull, turning all
+four bearded fighters into one brown bib; the glasses were sized and tinted such
+that they read as opaque ski goggles; and the receding-temple notches were drawn
+mid-hair rather than at the hairline, so they floated as two skin-coloured dots.
+
 ## How a fight works
 
 Three rounds of 60 seconds. **There is no decision** — if the bell goes at the

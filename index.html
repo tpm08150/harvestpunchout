@@ -203,9 +203,20 @@ const ROSTER = [
     id:'wooten', nick:'FIRST CALL', name:'James Wooten', title:'Production Manager',
     corner:'#1F6FEB',
     line:'Everything shows on his face a full second early. That is the lesson.',
-    look:{ skin:'#F0C9A8', hair:'#241A13', style:'undercut', beard:'none',
-           glasses:false, ear:true, nose:true, build:1.00,
-           trunk:'#1F6FEB', belt:'#0E2F63', glove:'#D93B2B' },
+    look:{
+      skin:'#F2CFB0', hair:'#241A13', build:1.00, seed:0,
+      trunk:'#1F6FEB', belt:'#0E2F63', glove:'#D93B2B',
+      // Narrow face, pointed chin, little cheek — the leanest of the seven.
+      face:{ w:0.95, jaw:0.85, chin:0.66, cheek:0.30, chins:0 },
+      // Tight at the sides, height on top swept up and back off a hard part.
+      crop:{ style:'undercut', vol:1.18, part:1, temples:0.10, overEar:0 },
+      brow:{ th:1.05, angle:0.05, gap:1.0 },
+      beard:{ type:'shadow', len:0 },
+      glasses:null,
+      ear:{ studs:'stud' },
+      nose:{ ring:'right', w:0.94, len:1.0 },
+      lips:{ w:0.90, th:0.80 }, smile:'smirk',
+    },
     fight:{ hp:55, gap:[1300,1900], guard:0.10, combo:1, rally:null,
             moves:[ M.hookL(700,7), M.hookR(700,7), M.jab(560,5) ] },
   },
@@ -213,9 +224,20 @@ const ROSTER = [
     id:'mckiernan', nick:'DOUBLE BOOKED', name:'Pete McKiernan', title:'Production Manager',
     corner:'#C9A227',
     line:'Never throws once. Dodge the first and the second is already coming.',
-    look:{ skin:'#F2CDA9', hair:'#3A2A1E', style:'coif', beard:'none',
-           glasses:false, ear:false, nose:false, build:1.14,
-           trunk:'#C9A227', belt:'#6E5714', glove:'#2E6BD1' },
+    look:{
+      skin:'#F4D0AC', hair:'#3A2A1E', build:1.14, seed:1,
+      trunk:'#C9A227', belt:'#6E5714', glove:'#2E6BD1',
+      // Round and full — heavy cheeks, soft jaw, a suggestion of a second chin.
+      face:{ w:1.11, jaw:1.06, chin:0.28, cheek:0.88, chins:0.38 },
+      // A lot of hair, high at the front and swept over.
+      crop:{ style:'sweep', vol:1.34, part:-1, temples:0, overEar:0.30 },
+      brow:{ th:1.0, angle:0.10, gap:1.0 },
+      beard:{ type:'none', len:0 },
+      glasses:null,
+      ear:{ studs:false },
+      nose:{ ring:null, w:1.04, len:0.94 },
+      lips:{ w:1.0, th:1.0 }, smile:'closed',
+    },
     fight:{ hp:72, gap:[950,1500], guard:0.18, combo:2, rally:null,
             moves:[ M.hookL(560,8), M.hookR(560,8), M.jab(420,5) ] },
   },
@@ -223,9 +245,22 @@ const ROSTER = [
     id:'faircloth', nick:'THE LONG HAUL', name:'Casey Faircloth', title:'Production Manager',
     corner:'#3FBF8F',
     line:'Goes to the body all night. You cannot block it and he knows it.',
-    look:{ skin:'#EBC49E', hair:'#4A3323', style:'mop', beard:'long',
-           glasses:'square', ear:false, nose:false, build:1.02,
-           trunk:'#3FBF8F', belt:'#1B5B44', glove:'#8B4A2B' },
+    look:{
+      skin:'#EEC7A2', hair:'#4A3323', build:1.02, seed:2,
+      trunk:'#3FBF8F', belt:'#1B5B44', glove:'#8B4A2B',
+      face:{ w:1.00, jaw:0.94, chin:0.42, cheek:0.48, chins:0 },
+      // Side-parted, wavy, long enough to cover the ears.
+      crop:{ style:'part', vol:1.08, part:-1, temples:0, overEar:0.85 },
+      brow:{ th:1.10, angle:0.06, gap:1.0 },
+      // The beard is the whole silhouette: chest-length, widening as it falls.
+      beard:{ type:'long', len:19, col:'#4A3323', flare:1.02 },
+      // Big thin-rimmed metal squares. These are the other half of the
+      // silhouette and the first thing anyone would name about him.
+      glasses:{ shape:'rect', w:1.10, h:1.02, frame:'#A8AEB6', th:0.85, tint:0.05 },
+      ear:{ studs:false },
+      nose:{ ring:null, w:1.0, len:1.0 },
+      lips:{ w:0.95, th:0.9 }, smile:'closed',
+    },
     fight:{ hp:92, gap:[900,1400], guard:0.22, combo:2, rally:null,
             moves:[ M.hookL(500,9), M.hookR(500,9), M.jab(400,5), M.low(560,11) ] },
   },
@@ -233,9 +268,22 @@ const ROSTER = [
     id:'smith', nick:'THE WAREHOUSE', name:'Weston Smith', title:'Production and Warehouse Manager',
     corner:'#E0552F',
     line:'Slow, and it will not matter once. Do not stand in front of the uppercut.',
-    look:{ skin:'#EFC6A6', hair:'#C6C1B8', style:'bald', beard:'goatee',
-           glasses:'square', ear:false, nose:false, build:1.32,
-           trunk:'#5A5F66', belt:'#2C3036', glove:'#E0552F' },
+    look:{
+      skin:'#F0C4A0', hair:'#C6C1B8', build:1.32, seed:3,
+      trunk:'#5A5F66', belt:'#2C3036', glove:'#E0552F',
+      // The widest face here, full cheeks and a real double chin.
+      face:{ w:1.24, jaw:1.16, chin:0.26, cheek:0.96, chins:0.72 },
+      // Bald on top, cropped grey round the sides — a horseshoe, not a cap.
+      crop:{ style:'bald', vol:0, part:0, temples:1, overEar:0 },
+      brow:{ th:1.15, angle:0.02, gap:1.05 },
+      // Moustache and chin joined into a short, neat circle beard, grey-white.
+      beard:{ type:'circle', len:9, col:'#CFCAC1' },
+      // Thick dark rectangles.
+      glasses:{ shape:'rect', w:1.00, h:0.92, frame:'#2B3038', th:1.35, tint:0.06 },
+      ear:{ studs:false },
+      nose:{ ring:null, w:1.10, len:0.96 },
+      lips:{ w:1.0, th:0.95 }, smile:'closed',
+    },
     fight:{ hp:112, gap:[1100,1700], guard:0.30, combo:1, rally:null,
             moves:[ M.hookL(620,13), M.hookR(620,13), M.low(600,12), M.upper(900,22) ] },
   },
@@ -243,9 +291,20 @@ const ROSTER = [
     id:'nissen', nick:'THE FIREWALL', name:'Tyler Nissen', title:'Chief Technology Officer',
     corner:'#7B4BD1',
     line:'Guards nearly everything. Go to the body, and stop falling for the feint.',
-    look:{ skin:'#EEC5A2', hair:'#33261C', style:'short', beard:'full',
-           glasses:false, ear:false, nose:false, build:1.14,
-           trunk:'#7B4BD1', belt:'#3A2266', glove:'#2FBF7F' },
+    look:{
+      skin:'#F0C7A4', hair:'#33261C', build:1.14, seed:4,
+      trunk:'#7B4BD1', belt:'#3A2266', glove:'#2FBF7F',
+      face:{ w:1.10, jaw:1.02, chin:0.34, cheek:0.82, chins:0.30 },
+      // Short, and going back at the temples.
+      crop:{ style:'short', vol:0.92, part:1, temples:0.35, overEar:0 },
+      brow:{ th:1.1, angle:0.08, gap:1.0 },
+      // Thick, jaw-covering, well kept — full but nothing like Casey's.
+      beard:{ type:'full', len:12, col:'#33261C', flare:0.90 },
+      glasses:null,
+      ear:{ studs:false },
+      nose:{ ring:null, w:1.05, len:0.95 },
+      lips:{ w:1.05, th:1.0 }, smile:'open',
+    },
     fight:{ hp:116, gap:[800,1300], guard:0.45, combo:2, rally:null,
             moves:[ M.jab(360,6), M.hookL(460,10), M.hookR(460,10), M.low(480,11), M.feint(500) ] },
   },
@@ -253,9 +312,19 @@ const ROSTER = [
     id:'morton', nick:'OVERTIME', name:'Tyler Morton', title:'Chief Operations Officer',
     corner:'#8BC542',
     line:'Fine for two rounds. Hurt him and he gets faster, not slower.',
-    look:{ skin:'#F0C8A6', hair:'#3B2A1D', style:'wave', beard:'stubble',
-           glasses:false, ear:false, nose:false, build:1.06,
-           trunk:'#8BC542', belt:'#3F6B15', glove:'#1B1F24' },
+    look:{
+      skin:'#F2CBA8', hair:'#3B2A1D', build:1.06, seed:5,
+      trunk:'#8BC542', belt:'#3F6B15', glove:'#1B1F24',
+      face:{ w:1.04, jaw:0.98, chin:0.40, cheek:0.66, chins:0.20 },
+      crop:{ style:'wave', vol:1.18, part:1, temples:0.15, overEar:0.10 },
+      brow:{ th:1.0, angle:0.10, gap:1.0 },
+      // More than stubble, well short of a full beard.
+      beard:{ type:'short', len:5, col:'#3B2A1D', flare:0.84 },
+      glasses:null,
+      ear:{ studs:false },
+      nose:{ ring:null, w:1.0, len:1.0 },
+      lips:{ w:1.0, th:0.95 }, smile:'closed',
+    },
     fight:{ hp:126, gap:[700,1150], guard:0.30, combo:3, rally:{ at:0.40, speed:0.70 },
             moves:[ M.jab(320,6), M.hookL(400,11), M.hookR(400,11), M.low(430,12) ] },
   },
@@ -263,9 +332,20 @@ const ROSTER = [
     id:'koan', nick:'THE HEADLINER', name:'Josh Koan', title:'Chief Executive Officer',
     corner:'#D4AF37',
     line:'Every trick the other six have, quicker, and one of his own. Good luck.',
-    look:{ skin:'#EDC2A0', hair:'#241A13', style:'ponytail', beard:'full',
-           glasses:false, ear:true, nose:false, build:1.10,
-           trunk:'#D4AF37', belt:'#6E5714', glove:'#B22222' },
+    look:{
+      skin:'#EFC7A6', hair:'#33251A', build:1.10, seed:6,
+      trunk:'#D4AF37', belt:'#6E5714', glove:'#B22222',
+      face:{ w:1.04, jaw:0.96, chin:0.46, cheek:0.58, chins:0.15 },
+      // Long, and pulled back off the face rather than hanging.
+      crop:{ style:'back', vol:1.12, part:0, temples:0, overEar:0.20 },
+      brow:{ th:1.05, angle:0.08, gap:1.0 },
+      // Full, medium-long, and it comes to a point.
+      beard:{ type:'full', len:15, col:'#33251A', flare:0.94, point:1 },
+      glasses:null,
+      ear:{ studs:'hoop' },
+      nose:{ ring:null, w:1.0, len:1.0 },
+      lips:{ w:1.0, th:1.0 }, smile:'open',
+    },
     fight:{ hp:150, gap:[620,1000], guard:0.35, combo:3, rally:{ at:0.45, speed:0.65 },
             moves:[ M.jab(280,7), M.hookL(350,12), M.hookR(350,12), M.low(380,13),
                     M.upper(620,26), M.feint(420) ] },
@@ -336,7 +416,14 @@ const Snd = (() => {
     }
   }
 
+  // ⚠️ Never start or resume while the page is hidden. visibilitychange only
+  // fires on a CHANGE, so a page that *loads* hidden — a background tab, or the
+  // Arcade iframe in a tab that is not on screen — never gets the event and
+  // would happily play to nobody for as long as it stays open.
+  const hidden = () => typeof document !== 'undefined' && document.hidden;
+
   function resume() {
+    if (hidden()) return;
     const a = ensure();
     if (!a || a.state !== 'suspended') return;
     try { const p = a.resume(); if (p && p.catch) p.catch(() => {}); } catch (err) { /* autoplay policy */ }
@@ -347,8 +434,11 @@ const Snd = (() => {
   // ducking gains leaves it running for as long as the page is open.
   function suspend() { if (ac && ac.state === 'running') ac.suspend(); }
   function wake() {
-    if (!ac) return;
-    if (ac.state === 'suspended') ac.resume().then(() => { nextNote = ac.currentTime + 0.05; });
+    if (!ac || hidden()) return;
+    if (ac.state === 'suspended') {
+      const p = ac.resume();
+      if (p && p.then) p.then(() => { nextNote = ac.currentTime + 0.05; }, () => {});
+    }
   }
 
   function blip(freq, dur, type, gain, slideTo) {
@@ -410,6 +500,7 @@ const Snd = (() => {
 
   return {
     kick() {
+      if (hidden()) return;
       const a = ensure(); if (!a) return;
       // The clock does not advance while suspended, so rebase on resume or the
       // scheduler dumps every sixteenth it missed at once.
@@ -1166,212 +1257,516 @@ function drawRing(t) {
    functions would drift the moment one of them got a fix. Everything that makes
    a person recognisable here is a flag: the undercut, the glasses, the beard
    length, the earrings. */
-function drawHead(x, y, s, look, mood, t) {
+/* ---------------------------------------------------------------------------
+   Faces.
+
+   One routine for all seven, driven entirely by `look`. Seven near-identical
+   draw functions would drift the moment one of them got a fix, and every
+   feature here is a parameter rather than a special case — so a new fighter is
+   an array entry, not new drawing code.
+
+   Two jobs, and they are separate:
+
+     - **Likeness.** Face shape, hair, facial hair, glasses and piercings are
+       the things people actually recognise each other by, so each is its own
+       set of numbers rather than a style keyword. Casey is not "the one with
+       glasses", he is a 1.38-width thin metal rectangle and a 23-long beard.
+
+     - **Expression.** The face has to say what the fighter is about to do, half
+       a second before he does it. Brows, eyes, jaw and head angle all move on
+       `mood`, and the wind-up is deliberately the loudest of them.
+
+   `fx` carries what the fight knows and the look does not: how hurt he is, and
+   which way he is leaning.
+------------------------------------------------------------------------- */
+function drawHead(x, y, s, look, mood, t, fx) {
+  fx = fx || {};
+  const dmg = Math.max(0, Math.min(1, fx.dmg || 0));   // 0 fresh .. 1 out on his feet
+  const turn = Math.max(-1, Math.min(1, fx.turn || 0));
+  const seed = look.seed || 0;
+
   const skin = look.skin, hair = look.hair;
+  const F = look.face || { w: 1, jaw: 1, chin: 0.4, cheek: 0.5, chins: 0 };
+  const C = look.crop || { style: 'short', vol: 1, part: 0, temples: 0, overEar: 0 };
+  const B = look.beard || { type: 'none', len: 0 };
+  const BR = look.brow || { th: 1, angle: 0.08, gap: 1 };
+  const LP = look.lips || { w: 1, th: 1 };
+  const NS = look.nose || { w: 1, len: 1, ring: null };
+  const beardCol = B.col || hair;
+
+  const fw = F.w;                       // face width multiplier
   const shadow = shade(skin, -30);
-  const fw = 0.94 + look.build * 0.10;      // heavier builds get a wider face
+  const deep = shade(skin, -52);
 
-  // Ears, behind the face and only just darker than it. Drawn in a near-black
-  // they read as bolts through the head, which is how the first pass looked.
-  const earX = 12.2 * s * fw;
-  ellipse(x - earX, y + 2 * s, 3.0 * s, 4.2 * s, shade(skin, -16));
-  ellipse(x + earX, y + 2 * s, 3.0 * s, 4.2 * s, shade(skin, -16));
+  // Local coordinate helper. Everything below is written in "face units" so a
+  // face can be widened without every feature having to be moved by hand.
+  const px = (dx) => x + dx * s * fw + turn * 1.6 * s;
+  const py = (dy) => y + dy * s;
+  const P2 = (dx, dy) => [px(dx), py(dy)];
 
-  // Face: one path with a tapered jaw. Two stacked ellipses gave a beach ball,
-  // and no amount of hair fixes a silhouette that has no chin in it.
-  const P2 = (dx, dy) => [x + dx * s * fw, y + dy * s];
+  /* -- blink -------------------------------------------------------------
+     Every 3-4 seconds, offset per fighter so seven of them on a card do not
+     blink in unison, which reads as a glitch rather than as people. */
+  const period = 3.2 + seed * 0.37;
+  const bph = ((t / 1000) + seed * 1.7) % period;
+  const blink = bph < 0.15 ? Math.sin((bph / 0.15) * Math.PI) : 0;
+
+  /* -- what the mood does to the face ------------------------------------ */
+  // jaw: how far the mouth is open. brow: down(+) or up(-). squint: eyes closing.
+  let jaw = 0, browDrop = 0, squint = 0, sneer = 0;
+  if (mood === 'wind')      { jaw = 0.85; browDrop = 1.0;  squint = 0.25; sneer = 1; }
+  else if (mood === 'guard'){ jaw = 0.05; browDrop = 0.75; squint = 0.35; }
+  else if (mood === 'hit')  { jaw = 0.55; browDrop = -0.9; squint = 0.85; }
+  else if (mood === 'stun') { jaw = 0.75; browDrop = -0.5; squint = 0; }
+  else if (mood === 'down') { jaw = 0.6;  browDrop = -0.3; squint = 0; }
+
+  // Breathing: faster and deeper the more damage he has taken. It is the
+  // cheapest way to make a fighter look like he is in trouble.
+  const breath = Math.sin(t / (mood === 'idle' ? 620 - dmg * 260 : 420)) * (0.35 + dmg * 0.5);
+
+  /* -- ears (behind the face) -------------------------------------------- */
+  const earX = 11.2 * fw;
+  const earHidden = (C.overEar || 0) > 0.6;
+  if (!earHidden) {
+    [-1, 1].forEach(d => {
+      ellipse(px(d * earX), py(2.4), 2.4 * s, 3.6 * s, shade(skin, -14));
+      ellipse(px(d * earX), py(2.6), 1.1 * s, 1.9 * s, shade(skin, -30));
+    });
+  }
+
+  /* -- neck --------------------------------------------------------------- */
+  cx.fillStyle = shade(skin, -16);
+  cx.fillRect(px(-4.6), py(10), 9.2 * s * fw, 8 * s);
+
+  /* -- face --------------------------------------------------------------- */
+  // A single path with a tapered jaw. `chin` pulls the point in, `jaw` widens
+  // the corners, `cheek` pushes the mid-face out.
+  const jw = 9.9 * F.jaw, ck = 11.3 + F.cheek * 1.1, cn = 5.6 * (1 - F.chin * 0.42);
   cx.fillStyle = skin;
   cx.beginPath();
-  cx.moveTo(...P2(0, -14));
-  cx.bezierCurveTo(...P2(11.5, -14), ...P2(12.6, -3), ...P2(11, 4));
-  cx.bezierCurveTo(...P2(9.4, 12), ...P2(4.6, 15), ...P2(0, 15));
-  cx.bezierCurveTo(...P2(-4.6, 15), ...P2(-9.4, 12), ...P2(-11, 4));
-  cx.bezierCurveTo(...P2(-12.6, -3), ...P2(-11.5, -14), ...P2(0, -14));
+  cx.moveTo(...P2(0, -14.2));
+  cx.bezierCurveTo(...P2(ck * 0.72, -14.0), ...P2(ck, -3.4), ...P2(ck * 0.97, 3.2));
+  cx.bezierCurveTo(...P2(jw, 9.6), ...P2(cn, 14.6), ...P2(0, 15.2 + F.chin * 0.8));
+  cx.bezierCurveTo(...P2(-cn, 14.6), ...P2(-jw, 9.6), ...P2(-ck * 0.97, 3.2));
+  cx.bezierCurveTo(...P2(-ck, -3.4), ...P2(-ck * 0.72, -14.0), ...P2(0, -14.2));
   cx.fill();
 
-  // cheek shading down one side, so a flat fill does not read as paper
-  cx.save(); cx.clip();
-  cx.globalAlpha = 0.10; cx.fillStyle = '#000';
-  cx.fillRect(x - 14 * s * fw, y - 15 * s, 5 * s * fw, 32 * s);
+  // Cheeks, for the fuller faces. Two soft blooms rather than a wider oval —
+  // a wide oval reads as a balloon, cheeks read as a person.
+  if (F.cheek > 0.55) {
+    cx.save(); cx.clip();
+    cx.globalAlpha = 0.16 * F.cheek;
+    ellipse(px(-6.4), py(4.4), 4.6 * s, 3.6 * s, shade(skin, 26));
+    ellipse(px(6.4), py(4.4), 4.6 * s, 3.6 * s, shade(skin, 26));
+    cx.globalAlpha = 1; cx.restore();
+  }
+  // Double chin.
+  if (F.chins > 0.1) {
+    cx.fillStyle = skin;
+    cx.beginPath();
+    cx.ellipse(px(0), py(14.2), jw * 0.78 * s, (2.2 + F.chins * 2.6) * s, 0, 0, Math.PI);
+    cx.fill();
+    cx.globalAlpha = 0.13; cx.strokeStyle = deep; cx.lineWidth = 1.2 * s;
+    cx.beginPath(); cx.moveTo(px(-4.4), py(12.6)); cx.quadraticCurveTo(px(0), py(14.4), px(4.4), py(12.6));
+    cx.stroke(); cx.globalAlpha = 1;
+  }
+  // Shading down the side away from the light, plus a brow ridge.
+  cx.save();
+  cx.beginPath();
+  cx.moveTo(...P2(0, -14.2));
+  cx.bezierCurveTo(...P2(ck * 0.72, -14.0), ...P2(ck, -3.4), ...P2(ck * 0.97, 3.2));
+  cx.bezierCurveTo(...P2(jw, 9.6), ...P2(cn, 14.6), ...P2(0, 15.2));
+  cx.bezierCurveTo(...P2(-cn, 14.6), ...P2(-jw, 9.6), ...P2(-ck * 0.97, 3.2));
+  cx.bezierCurveTo(...P2(-ck, -3.4), ...P2(-ck * 0.72, -14.0), ...P2(0, -14.2));
+  cx.clip();
+  cx.globalAlpha = 0.09; cx.fillStyle = '#000';
+  cx.fillRect(px(-ck - 1), py(-15), 4.6 * s * fw, 32 * s);
+  cx.globalAlpha = 0.07;
+  cx.fillRect(px(-ck - 1), py(-15), 26 * s * fw, 3.4 * s);   // under the hairline
   cx.globalAlpha = 1;
   cx.restore();
 
-  /* --- hair ------------------------------------------------------------- */
-  const top = (rx, ry, dy, col) => {
+  /* -- hair --------------------------------------------------------------- */
+  const vol = C.vol == null ? 1 : C.vol;
+  const part = C.part || 0;
+  const capTop = -13.6 - vol * 1.9;
+
+  const cap = (rx, ry, dy, col) => {
     cx.fillStyle = col;
     cx.beginPath();
-    cx.ellipse(x, y + dy * s, rx * s * fw, ry * s, 0, Math.PI, Math.PI * 2);
+    cx.ellipse(px(0), py(dy), rx * s * fw, ry * s, 0, Math.PI, Math.PI * 2);
     cx.fill();
   };
 
-  if (look.style === 'bald') {
-    // a horseshoe — hair only around the sides and back
-    cx.fillStyle = hair;
-    cx.beginPath(); cx.ellipse(x, y - 2 * s, 12.4 * s * fw, 12 * s, 0, Math.PI * 0.86, Math.PI * 2.14); cx.fill();
-    cx.fillStyle = skin;
-    cx.beginPath(); cx.ellipse(x, y - 4 * s, 10.2 * s * fw, 10.6 * s, 0, Math.PI, Math.PI * 2); cx.fill();
-    // a shine on the crown, which is what actually says "bald"
-    cx.globalAlpha = 0.16; ellipse(x - 3 * s, y - 9 * s, 4 * s, 2.2 * s, '#FFF'); cx.globalAlpha = 1;
-  } else if (look.style === 'undercut') {
-    // Shaved right down at the sides, height on top, swept back. The contrast
-    // between the two is the whole haircut, so the sides go a long way darker.
-    cx.fillStyle = shade(hair, 40);
-    cx.beginPath(); cx.ellipse(x, y - 1 * s, 12.4 * s * fw, 11 * s, 0, Math.PI, Math.PI * 2); cx.fill();
+  if (C.style === 'bald') {
+    // Horseshoe: cropped round the sides and back, bare on top.
     cx.fillStyle = hair;
     cx.beginPath();
-    cx.moveTo(...P2(-9.5, -9));
-    cx.bezierCurveTo(...P2(-8, -18), ...P2(9, -18.5), ...P2(10.5, -9.5));
-    cx.bezierCurveTo(...P2(6, -12), ...P2(-5, -12.5), ...P2(-9.5, -9));
+    cx.ellipse(px(0), py(-1.5), (ck + 0.5) * s * fw, 12.4 * s, 0, Math.PI * 0.80, Math.PI * 2.20);
     cx.fill();
-    top(10.2, 8.4, -6, hair);
-  } else if (look.style === 'coif') {
-    top(13.0, 12.6, -3, hair);                       // plenty of it
-    cx.fillStyle = hair;                             // and a wave forward
-    cx.beginPath(); cx.ellipse(x - 3.5 * s, y - 12.5 * s, 7.6 * s, 4.8 * s, -0.34, 0, 7); cx.fill();
-  } else if (look.style === 'mop') {
-    top(13.2, 12.6, -2, hair);
-    cx.fillStyle = hair;                             // sideburns down past the ear
-    cx.fillRect(x - 13.2 * s * fw, y - 4 * s, 3.4 * s, 9 * s);
-    cx.fillRect(x + 13.2 * s * fw - 3.4 * s, y - 4 * s, 3.4 * s, 9 * s);
-  } else if (look.style === 'ponytail') {
-    // tied back: flat on top, and the bundle sits behind the jaw
-    ellipse(x + 12.5 * s * fw, y + 5 * s, 4.4 * s, 6.6 * s, shade(hair, -10));
-    top(12.4, 11.4, -2, hair);
-    cx.globalAlpha = 0.35; cx.strokeStyle = shade(hair, -40); cx.lineWidth = 1.2 * s;
-    for (let i = -2; i <= 2; i++) {
+    cx.fillStyle = skin;
+    cx.beginPath();
+    cx.ellipse(px(0), py(-3.6), (ck - 1.9) * s * fw, 11.0 * s, 0, Math.PI, Math.PI * 2);
+    cx.fill();
+    cx.globalAlpha = 0.14;
+    ellipse(px(-3.2), py(-9.4), 4.4 * s, 2.2 * s, '#FFF');   // the shine that says bald
+    cx.globalAlpha = 1;
+  } else if (C.style === 'undercut') {
+    // Tight at the sides, height on top swept back off a hard part. The two
+    // have to contrast or it just reads as a dark cap — so the sides go
+    // LIGHTER, not darker, which is what short hair over scalp actually does.
+    cx.fillStyle = shade(hair, 30);
+    cx.beginPath();
+    cx.ellipse(px(0), py(-2.2), (ck - 0.4) * s * fw, 10.2 * s, 0, Math.PI, Math.PI * 2);
+    cx.fill();
+    cx.fillStyle = hair;
+    cx.beginPath();
+    cx.moveTo(...P2(-9.4, -8.6));
+    cx.bezierCurveTo(...P2(-8.4, capTop - 2), ...P2(8.6, capTop - 2.6), ...P2(10.2, -9.2));
+    cx.bezierCurveTo(...P2(5.6, -12.4), ...P2(-4.6, -12.8), ...P2(-9.4, -8.6));
+    cx.fill();
+    cap(9.9, 7.6 * vol, -6.4, hair);
+    // the swept quiff at the front
+    cx.globalAlpha = 0.35; cx.fillStyle = shade(hair, 26);
+    cx.beginPath();
+    cx.moveTo(...P2(-7.8, -10.8));
+    cx.quadraticCurveTo(...P2(-1.5, capTop - 2.2), ...P2(6.2, -12.4));
+    cx.quadraticCurveTo(...P2(-1, -11.8), ...P2(-7.8, -10.8));
+    cx.fill(); cx.globalAlpha = 1;
+  } else if (C.style === 'sweep') {
+    // A lot of hair, high at the front and pushed across.
+    cap(ck + 1.4, 12.4 * vol, -2.6, hair);
+    cx.fillStyle = hair;
+    cx.beginPath();
+    cx.ellipse(px(part * -3.6), py(-12.6), 7.8 * s, 5.0 * s, part * -0.34, 0, 7);
+    cx.fill();
+    cx.globalAlpha = 0.16; cx.fillStyle = '#FFF';
+    cx.beginPath(); cx.ellipse(px(part * -4.6), py(-11.6), 4.4 * s, 1.5 * s, part * -0.34, 0, 7); cx.fill();
+    cx.globalAlpha = 1;
+  } else if (C.style === 'part') {
+    // Side-parted and wavy, long enough to cover the ears.
+    cap(ck + 1.0, 12.2 * vol, -2.2, hair);
+    cx.fillStyle = hair;
+    const over = 4 + (C.overEar || 0) * 7;
+    cx.fillRect(px(-ck - 1.0), py(-4), 3.6 * s, over * s);
+    cx.fillRect(px(ck - 2.6), py(-4), 3.6 * s, over * s);
+    // the part itself
+    cx.globalAlpha = 0.30; cx.strokeStyle = shade(hair, -34); cx.lineWidth = 1.4 * s;
+    cx.beginPath(); cx.moveTo(px(part * 3.4), py(-13.4)); cx.quadraticCurveTo(px(part * 6.6), py(-9), px(part * 8.4), py(-5));
+    cx.stroke(); cx.globalAlpha = 1;
+  } else if (C.style === 'back') {
+    // Long, and pulled back off the face — the bundle sits behind the jaw.
+    // Tied behind — one bundle, low and mostly hidden behind the jaw.
+    ellipse(px(10.2), py(2.8), 3.3 * s, 5.0 * s, shade(hair, -14));
+    cap(ck + 0.4, 11.8 * vol, -2.0, hair);
+    cx.globalAlpha = 0.34; cx.strokeStyle = shade(hair, -42); cx.lineWidth = 1.1 * s;
+    for (let i = -3; i <= 3; i++) {
       cx.beginPath();
-      cx.moveTo(x + i * 3 * s, y - 13 * s); cx.quadraticCurveTo(x + i * 4 * s, y - 7 * s, x + 9 * s, y - 2 * s);
+      cx.moveTo(px(i * 2.6), py(-13.2));
+      cx.quadraticCurveTo(px(i * 3.4), py(-7.4), px(9.2), py(-1.6));
       cx.stroke();
     }
     cx.globalAlpha = 1;
-  } else if (look.style === 'wave') {
-    top(12.6, 11.4, -3, hair);
+  } else if (C.style === 'wave') {
+    cap(ck + 0.6, 11.6 * vol, -3.0, hair);
     cx.fillStyle = hair;
-    cx.beginPath(); cx.ellipse(x + 4.5 * s, y - 11.5 * s, 6 * s, 4 * s, 0.38, 0, 7); cx.fill();
+    cx.beginPath(); cx.ellipse(px(4.6), py(-11.8), 6.2 * s, 4.2 * s, 0.40, 0, 7); cx.fill();
+    cx.beginPath(); cx.ellipse(px(-4.2), py(-12.2), 5.0 * s, 3.4 * s, -0.30, 0, 7); cx.fill();
   } else { // short
-    top(12.4, 11.2, -2.5, hair);
+    cap(ck + 0.2, 11.4 * vol, -2.6, hair);
   }
 
-  /* --- eyes ------------------------------------------------------------- */
-  const eyeY = y - 1.5 * s, ex = 5.0 * s * fw;
-  if (mood === 'stun' || mood === 'down') {
-    cx.strokeStyle = '#20140E'; cx.lineWidth = 1.6 * s; cx.lineCap = 'round';
+  // Receding temples — cut two notches of skin back into the hairline.
+  if (C.temples > 0 && C.style !== 'bald') {
+    // Cut the notch INTO the hairline. Placed higher it just floats as two
+    // skin-coloured dots in the middle of the hair, which is what it did.
+    const hairline = -2.4 - (C.style === 'sweep' || C.style === 'part' ? 0.6 : 0);
+    cx.fillStyle = skin;
     [-1, 1].forEach(d => {
-      const cxx = x + d * ex;
       cx.beginPath();
-      cx.moveTo(cxx - 2.6 * s, eyeY - 2.6 * s); cx.lineTo(cxx + 2.6 * s, eyeY + 2.6 * s);
-      cx.moveTo(cxx + 2.6 * s, eyeY - 2.6 * s); cx.lineTo(cxx - 2.6 * s, eyeY + 2.6 * s);
+      cx.ellipse(px(d * 8.1), py(hairline - 1.6), 3.0 * s * C.temples, 3.1 * s * C.temples, d * 0.42, 0, 7);
+      cx.fill();
+    });
+  }
+
+  /* -- eyes --------------------------------------------------------------- */
+  const eyeY = -1.6, ex = 4.9 * (BR.gap || 1);
+  const openBase = mood === 'wind' ? 3.5 : (mood === 'stun' ? 3.0 : 2.75);
+  const open = Math.max(0.08, openBase * (1 - squint * 0.8) * (1 - blink * 0.94));
+
+  if (mood === 'down') {
+    // Flat crosses. A man on the canvas with alert eyes reads as a man having
+    // a lie down, which is not the same thing.
+    cx.strokeStyle = '#20140E'; cx.lineWidth = 1.7 * s; cx.lineCap = 'round';
+    [-1, 1].forEach(d => {
+      const cxx = px(d * ex), cyy = py(eyeY);
+      cx.beginPath();
+      cx.moveTo(cxx - 2.7 * s, cyy - 2.7 * s); cx.lineTo(cxx + 2.7 * s, cyy + 2.7 * s);
+      cx.moveTo(cxx + 2.7 * s, cyy - 2.7 * s); cx.lineTo(cxx - 2.7 * s, cyy + 2.7 * s);
+      cx.stroke();
+    });
+  } else if (mood === 'stun') {
+    // Spiral eyes. Cartoon shorthand, and instantly readable at this size.
+    [-1, 1].forEach(d => {
+      ellipse(px(d * ex), py(eyeY), 3.4 * s, 3.4 * s, '#F6F1EA');
+      cx.strokeStyle = '#20140E'; cx.lineWidth = 1.15 * s; cx.lineCap = 'round';
+      cx.beginPath();
+      for (let i = 0; i <= 26; i++) {
+        const a2 = (i / 26) * Math.PI * 3.1 + t / 150 * d;
+        const r2 = (i / 26) * 3.0 * s;
+        const xx = px(d * ex) + Math.cos(a2) * r2, yy = py(eyeY) + Math.sin(a2) * r2;
+        i ? cx.lineTo(xx, yy) : cx.moveTo(xx, yy);
+      }
+      cx.stroke();
+    });
+  } else if (mood === 'hit' && squint > 0.8) {
+    // Screwed shut.
+    cx.strokeStyle = deep; cx.lineWidth = 1.7 * s; cx.lineCap = 'round';
+    [-1, 1].forEach(d => {
+      cx.beginPath();
+      cx.moveTo(px(d * ex - 3.2), py(eyeY + 0.6));
+      cx.quadraticCurveTo(px(d * ex), py(eyeY - 1.6), px(d * ex + 3.2), py(eyeY + 0.6));
       cx.stroke();
     });
   } else {
-    const open = mood === 'wind' ? 3.4 : (mood === 'hit' ? 1.3 : 2.7);
+    // Look toward whatever is coming, which is the only "aim" the face has.
+    const gaze = mood === 'guard' ? 0 : (mood === 'wind' ? turn * -1.1 : Math.sin(t / 1100 + seed) * 0.6);
     [-1, 1].forEach(d => {
-      ellipse(x + d * ex, eyeY, 3.1 * s, open * s, '#F6F1EA');
-      const drift = mood === 'guard' ? 0 : Math.sin(t / 900) * 0.7 * s;
-      circle(x + d * ex + drift, eyeY, 1.5 * s, '#20140E');
-      // lid, which is what stops every one of them looking permanently startled
+      ellipse(px(d * ex), py(eyeY), 3.15 * s, open * s, '#F6F1EA');
+      cx.save();
+      cx.beginPath(); cx.ellipse(px(d * ex), py(eyeY), 3.15 * s, open * s, 0, 0, 7); cx.clip();
+      circle(px(d * ex + gaze), py(eyeY + 0.2), 1.55 * s, '#3A2A1E');
+      circle(px(d * ex + gaze), py(eyeY + 0.2), 0.85 * s, '#140D08');
+      circle(px(d * ex + gaze - 0.6), py(eyeY - 0.6), 0.42 * s, '#FFF');
+      cx.restore();
+      // upper lid, so nobody looks permanently startled
       cx.fillStyle = skin;
-      cx.fillRect(x + d * ex - 3.2 * s, eyeY - open * s - 1.2 * s, 6.4 * s, 1.4 * s);
+      cx.fillRect(px(d * ex - 3.4), py(eyeY) - open * s - 1.5 * s, 6.8 * s * fw, 1.7 * s);
+      cx.globalAlpha = 0.30; cx.strokeStyle = deep; cx.lineWidth = 0.9 * s;
+      cx.beginPath();
+      cx.moveTo(px(d * ex - 3.2), py(eyeY) - open * s);
+      cx.quadraticCurveTo(px(d * ex), py(eyeY) - open * s - 1.1 * s, px(d * ex + 3.2), py(eyeY) - open * s);
+      cx.stroke(); cx.globalAlpha = 1;
     });
   }
 
-  // brows — down and in for a wind-up, up for a hit. Half the telegraph.
-  cx.strokeStyle = shade(hair, -20); cx.lineWidth = 2.1 * s; cx.lineCap = 'round';
-  const bt = (mood === 'wind' || mood === 'guard') ? 2.0 : (mood === 'hit' ? -1.2 : 0.5);
-  cx.beginPath();
-  cx.moveTo(x - ex - 3.6 * s, eyeY - 5.4 * s + bt * s * 0.5);
-  cx.lineTo(x - ex + 3.2 * s, eyeY - 4.2 * s - bt * s * 0.5);
-  cx.moveTo(x + ex + 3.6 * s, eyeY - 5.4 * s + bt * s * 0.5);
-  cx.lineTo(x + ex - 3.2 * s, eyeY - 4.2 * s - bt * s * 0.5);
-  cx.stroke();
+  // Brows. The single loudest part of the telegraph.
+  cx.strokeStyle = shade(hair, -22); cx.lineWidth = 2.1 * s * (BR.th || 1); cx.lineCap = 'round';
+  const bd = browDrop * 1.9, ba = (BR.angle || 0.08);
+  [-1, 1].forEach(d => {
+    cx.beginPath();
+    cx.moveTo(px(d * (ex + 3.6)), py(eyeY - 5.6 + bd * 0.45 + d * ba * turn));
+    cx.quadraticCurveTo(px(d * (ex + 0.2)), py(eyeY - 6.6 + bd * 0.75),
+                        px(d * (ex - 3.3)), py(eyeY - 4.4 + bd * 1.05));
+    cx.stroke();
+  });
+  // A furrow between them when he means it.
+  if (browDrop > 0.5) {
+    cx.globalAlpha = 0.22 * browDrop; cx.strokeStyle = deep; cx.lineWidth = 1.1 * s;
+    cx.beginPath(); cx.moveTo(px(-1.1), py(eyeY - 4.4)); cx.lineTo(px(-0.7), py(eyeY - 1.6));
+    cx.moveTo(px(1.1), py(eyeY - 4.4)); cx.lineTo(px(0.7), py(eyeY - 1.6));
+    cx.stroke(); cx.globalAlpha = 1;
+  }
 
-  // nose: a shadow down one side and under the tip, never a dark blob
+  /* -- nose --------------------------------------------------------------- */
+  const nw = NS.w || 1, nl = NS.len || 1;
   cx.strokeStyle = shadow; cx.lineWidth = 1.5 * s; cx.lineCap = 'round';
   cx.beginPath();
-  cx.moveTo(x - 0.6 * s, y + 0.5 * s);
-  cx.quadraticCurveTo(x - 2.2 * s, y + 4.2 * s, x + 0.4 * s, y + 4.8 * s);
+  cx.moveTo(px(-0.7), py(0.4));
+  cx.quadraticCurveTo(px(-2.4 * nw), py(4.4 * nl), px(0.5), py(5.2 * nl));
   cx.stroke();
-  if (look.nose) {
-    cx.strokeStyle = '#D8D2C4'; cx.lineWidth = 1.2 * s;
-    cx.beginPath(); cx.arc(x + 2.0 * s, y + 5.2 * s, 1.9 * s, -0.5, Math.PI + 0.5); cx.stroke();
+  cx.globalAlpha = 0.5;
+  ellipse(px(-1.9 * nw), py(5.3 * nl), 0.8 * s, 0.6 * s, deep);
+  ellipse(px(1.9 * nw), py(5.3 * nl), 0.8 * s, 0.6 * s, deep);
+  cx.globalAlpha = 1;
+  if (NS.ring) {
+    const d = NS.ring === 'left' ? -1 : 1;
+    cx.strokeStyle = '#D9D3C6'; cx.lineWidth = 1.15 * s;
+    cx.beginPath(); cx.arc(px(d * 2.3 * nw), py(5.6 * nl), 1.7 * s, -0.6, Math.PI + 0.4); cx.stroke();
   }
 
-  /* --- beard ------------------------------------------------------------ */
-  if (look.beard === 'full' || look.beard === 'long') {
-    const len = look.beard === 'long' ? 19 : 11;
-    cx.fillStyle = hair;
-    cx.beginPath();
-    cx.moveTo(...P2(-11.4, 0));
-    cx.quadraticCurveTo(...P2(-10.6, len + 5), ...P2(0, len + 8));
-    cx.quadraticCurveTo(...P2(10.6, len + 5), ...P2(11.4, 0));
-    cx.quadraticCurveTo(...P2(6, 7), ...P2(0, 7.4));
-    cx.quadraticCurveTo(...P2(-6, 7), ...P2(-11.4, 0));
-    cx.fill();
-    // moustache, drawn over the lip so the mouth still reads through it
-    ellipse(x, y + 7.0 * s, 5.6 * s, 2.0 * s, hair);
-  } else if (look.beard === 'goatee') {
-    cx.fillStyle = hair;
-    cx.beginPath();
-    cx.moveTo(...P2(-5.0, 7));
-    cx.quadraticCurveTo(...P2(-5.6, 15), ...P2(0, 16));
-    cx.quadraticCurveTo(...P2(5.6, 15), ...P2(5.0, 7));
-    cx.fill();
-    ellipse(x, y + 7.0 * s, 5.4 * s, 2.0 * s, hair);
-  } else if (look.beard === 'stubble') {
+  /* -- beard (under the mouth; the mouth is drawn over it) ---------------- */
+  const jawOpen = jaw * 2.6;
+  if (B.type === 'shadow' || B.type === 'stubble') {
     cx.save();
-    cx.globalAlpha = 0.26; cx.fillStyle = hair;
+    cx.globalAlpha = B.type === 'shadow' ? 0.13 : 0.26;
+    cx.fillStyle = beardCol;
     cx.beginPath();
-    cx.moveTo(...P2(-11, 1));
-    cx.bezierCurveTo(...P2(-9.4, 12), ...P2(-4.6, 15), ...P2(0, 15));
-    cx.bezierCurveTo(...P2(4.6, 15), ...P2(9.4, 12), ...P2(11, 1));
-    cx.quadraticCurveTo(...P2(0, 8), ...P2(-11, 1));
+    cx.moveTo(...P2(-ck * 0.94, 1.4));
+    cx.bezierCurveTo(...P2(-jw, 9.6), ...P2(-cn, 14.6), ...P2(0, 15.2));
+    cx.bezierCurveTo(...P2(cn, 14.6), ...P2(jw, 9.6), ...P2(ck * 0.94, 1.4));
+    cx.quadraticCurveTo(...P2(0, 7.4), ...P2(-ck * 0.94, 1.4));
     cx.fill();
     cx.restore();
+  } else if (B.type !== 'none') {
+    const len = B.len || 10, flare = B.flare || 1, point = B.point || 0;
+    cx.fillStyle = beardCol;
+    if (B.type === 'circle') {
+      // Moustache and chin joined in a ring round the mouth, nothing on the cheeks.
+      cx.beginPath();
+      cx.ellipse(px(0), py(9.0 + jawOpen * 0.4), 5.1 * s, (4.6 + len * 0.15) * s, 0, 0, 7);
+      cx.fill();
+      cx.globalAlpha = 1;
+    } else {
+      // Jaw-following: short, full and long are the same shape at three lengths,
+      // widening as it falls for the long one.
+      // Hug the jaw. Starting at the cheekbone and flaring wider than the
+      // skull turned all four bearded fighters into one brown bib.
+      const w1 = ck * (B.type === 'short' ? 0.80 : 0.86);
+      const tip = 15.2 + len;
+      cx.beginPath();
+      cx.moveTo(...P2(-w1, 3.2));
+      cx.bezierCurveTo(...P2(-w1 * flare, 10 + len * 0.45), ...P2(-cn * flare, tip - 2), ...P2(0, tip + point * 2.2));
+      cx.bezierCurveTo(...P2(cn * flare, tip - 2), ...P2(w1 * flare, 10 + len * 0.45), ...P2(w1, 3.2));
+      // The upper edge dips low in the middle so the mouth is not buried.
+      cx.quadraticCurveTo(...P2(0, 11.4), ...P2(-w1, 3.2));
+      cx.fill();
+      // a little shape in it rather than one flat slab
+      cx.globalAlpha = 0.18; cx.strokeStyle = shade(beardCol, -34); cx.lineWidth = 1.2 * s;
+      for (let i = -2; i <= 2; i++) {
+        cx.beginPath();
+        cx.moveTo(px(i * 2.3), py(11.5));
+        cx.quadraticCurveTo(px(i * 2.8), py(13 + len * 0.5), px(i * 1.7), py(tip - 1.5));
+        cx.stroke();
+      }
+      cx.globalAlpha = 1;
+    }
+    // Moustache over the lip for everything except plain stubble.
+    if (B.type !== 'short') ellipse(px(0), py(6.9), 4.5 * s * (LP.w || 1), 1.8 * s, beardCol);
+    cx.globalAlpha = 0.22; cx.strokeStyle = shade(beardCol, -40); cx.lineWidth = 0.9 * s;
+    cx.beginPath(); cx.moveTo(px(-3.7), py(6.7)); cx.quadraticCurveTo(px(0), py(7.7), px(3.7), py(6.7));
+    cx.stroke(); cx.globalAlpha = 1;
   }
 
-  // The mouth goes on AFTER the beard. Drawn under it, the open-mouth
-  // wind-up — the clearest tell any of them has — disappears entirely on
-  // the four who have one.
-  /* --- mouth ------------------------------------------------------------ */
-  const my = y + 9.4 * s;
-  if (mood === 'wind') {
-    ellipse(x, my + 0.6 * s, 4.2 * s, 3.2 * s, '#5A241E');
-    ellipse(x, my - 0.4 * s, 3.4 * s, 1.0 * s, '#F0E6DC');   // teeth
-  } else if (mood === 'hit' || mood === 'down') {
-    ellipse(x, my, 3.6 * s, 2.6 * s, '#5A241E');
+  /* -- mouth (over the beard, always) ------------------------------------- */
+  const my = 9.4 + breath * 0.15;
+  const lw = 4.3 * (LP.w || 1), lt = LP.th || 1;
+  const smile = look.smile || 'closed';
+  if (jaw > 0.3) {
+    // Open: a dark cavity with teeth at the top. Depth follows `jaw`, so the
+    // wind-up is a shout and a hit is a grunt.
+    const h = (1.6 + jawOpen * 1.15) * s;
+    ellipse(px(0), py(my + jawOpen * 0.42), lw * 0.92 * s, h, '#4A1C18');
+    ellipse(px(0), py(my - 0.5 + jawOpen * 0.10), lw * 0.80 * s, 1.05 * s, '#F2E9DE');
+    if (jaw > 0.6) ellipse(px(0), py(my + jawOpen * 0.86), lw * 0.62 * s, 0.8 * s, '#C86B62');  // tongue
+  } else if (smile === 'open' && mood === 'idle') {
+    // A real grin with teeth — two of the seven actually smile like this.
+    ellipse(px(0), py(my + 0.4), lw * 1.02 * s, 2.3 * s, '#4A1C18');
+    ellipse(px(0), py(my - 0.35), lw * 0.92 * s, 1.35 * s, '#F4ECE2');
+    cx.globalAlpha = 0.35; cx.strokeStyle = '#B8A99B'; cx.lineWidth = 0.7 * s;
+    for (let i = -2; i <= 2; i++) {
+      cx.beginPath(); cx.moveTo(px(i * 1.5), py(my - 1.6)); cx.lineTo(px(i * 1.5), py(my + 0.9)); cx.stroke();
+    }
+    cx.globalAlpha = 1;
   } else {
-    cx.strokeStyle = '#7A3A2E'; cx.lineWidth = 1.9 * s; cx.lineCap = 'round';
+    cx.strokeStyle = '#7A3A2E'; cx.lineWidth = 1.9 * s * lt; cx.lineCap = 'round';
     cx.beginPath();
-    cx.moveTo(x - 4.2 * s, my);
-    cx.quadraticCurveTo(x, my + (mood === 'guard' ? -1.4 : 1.8) * s, x + 4.2 * s, my);
+    if (smile === 'smirk') {
+      // Up one side only.
+      cx.moveTo(px(-lw), py(my + 0.5));
+      cx.quadraticCurveTo(px(0), py(my + 1.5), px(lw), py(my - 1.1));
+    } else {
+      const curve = mood === 'guard' ? -1.5 : (smile === 'closed' ? 1.7 : 0.6);
+      cx.moveTo(px(-lw), py(my));
+      cx.quadraticCurveTo(px(0), py(my + curve), px(lw), py(my));
+    }
     cx.stroke();
   }
+  if (sneer) {
+    // Nose wrinkle on the wind-up.
+    cx.globalAlpha = 0.24; cx.strokeStyle = deep; cx.lineWidth = 1.0 * s;
+    cx.beginPath(); cx.moveTo(px(-2.6), py(5.6)); cx.quadraticCurveTo(px(0), py(4.6), px(2.6), py(5.6));
+    cx.stroke(); cx.globalAlpha = 1;
+  }
 
-  /* --- glasses ---------------------------------------------------------- */
+  /* -- damage ------------------------------------------------------------
+     Punch-Out told you how a fight was going by the state of the other man's
+     face, and it is far more readable than watching a bar. Swelling first,
+     then colour, then a cut. */
+  if (dmg > 0.18) {
+    const k = (dmg - 0.18) / 0.82;
+    cx.globalAlpha = 0.30 * k;
+    ellipse(px(-ex), py(eyeY + 3.3), 3.5 * s, 1.5 * s * (0.5 + k), '#8C3A2E');   // swelling under the eye
+    ellipse(px(ex), py(eyeY + 3.3), 3.1 * s, 1.3 * s * (0.5 + k), '#8C3A2E');
+    cx.globalAlpha = 0.20 * k;
+    ellipse(px(-6.9), py(4.0), 3.2 * s, 2.4 * s, '#C2483A');                     // colour in the cheeks
+    ellipse(px(6.9), py(4.0), 3.2 * s, 2.4 * s, '#C2483A');
+    cx.globalAlpha = 1;
+  }
+  if (dmg > 0.55) {
+    // A cut over the eye, and it runs.
+    const k = (dmg - 0.55) / 0.45;
+    cx.strokeStyle = '#A3231B'; cx.lineWidth = 1.5 * s;
+    cx.beginPath(); cx.moveTo(px(-ex - 2.6), py(eyeY - 6.4)); cx.lineTo(px(-ex + 1.4), py(eyeY - 5.2)); cx.stroke();
+    cx.globalAlpha = 0.75;
+    cx.fillStyle = '#8E1C15';
+    cx.fillRect(px(-ex - 1.0), py(eyeY - 5.4), 0.9 * s, (2.5 + k * 6) * s);
+    cx.globalAlpha = 1;
+  }
+  if (dmg > 0.30) {
+    // Sweat, falling on its own clock so it never lines up with the bobbing.
+    cx.globalAlpha = 0.55;
+    for (let i = 0; i < 3; i++) {
+      const ph = ((t / 900) + i * 0.37 + seed * 0.2) % 1;
+      const dx0 = [-8.4, 7.9, 4.2][i], dy0 = [-9, -10.4, -11.6][i];
+      ellipse(px(dx0), py(dy0 + ph * 13), 0.95 * s, 1.5 * s, '#BFE2F2');
+    }
+    cx.globalAlpha = 1;
+  }
+
+  /* -- glasses (over the beard and the damage, they sit on the face) ------ */
   if (look.glasses) {
-    cx.strokeStyle = '#23272E'; cx.lineWidth = 1.6 * s;
-    const gw = 5.6 * s, gh = 4.4 * s;
+    const G2 = look.glasses;
+    const gw = 5.05 * (G2.w || 1), gh = 4.05 * (G2.h || 1);
+    cx.lineWidth = 1.05 * s * (G2.th || 1);
+    cx.strokeStyle = G2.frame || '#23272E';
     [-1, 1].forEach(d => {
-      cx.fillStyle = 'rgba(200,225,245,.18)';
-      if (look.glasses === 'square') {
-        cx.beginPath();
-        cx.rect(x + d * ex - gw, eyeY - gh, gw * 2, gh * 2);
-        cx.fill(); cx.stroke();
+      cx.fillStyle = 'rgba(205,228,246,' + (G2.tint == null ? 0.07 : G2.tint) + ')';
+      cx.beginPath();
+      if (G2.shape === 'aviator') {
+        cx.ellipse(px(d * ex), py(eyeY + 0.4), gw * s, gh * s, 0, 0, 7);
       } else {
-        cx.beginPath(); cx.ellipse(x + d * ex, eyeY, gw, gh, 0, 0, 7); cx.fill(); cx.stroke();
+        // Rounded rectangle — square frames are a different face from round ones.
+        const rx0 = px(d * ex) - gw * s, ry0 = py(eyeY) - gh * s;
+        const rw = gw * 2 * s, rh = gh * 2 * s, rr0 = 1.6 * s;
+        cx.moveTo(rx0 + rr0, ry0);
+        cx.arcTo(rx0 + rw, ry0, rx0 + rw, ry0 + rh, rr0);
+        cx.arcTo(rx0 + rw, ry0 + rh, rx0, ry0 + rh, rr0);
+        cx.arcTo(rx0, ry0 + rh, rx0, ry0, rr0);
+        cx.arcTo(rx0, ry0, rx0 + rw, ry0, rr0);
+        cx.closePath();
       }
+      cx.fill(); cx.stroke();
+      // a glint, so they read as glass rather than as holes
+      // A narrow diagonal streak. A wide one filled the lens and turned
+      // every bespectacled fighter into a man wearing two white tiles.
+      cx.globalAlpha = 0.16; cx.fillStyle = '#FFF';
+      cx.beginPath();
+      cx.moveTo(px(d * ex - gw * 0.55), py(eyeY + gh * 0.55));
+      cx.lineTo(px(d * ex - gw * 0.25), py(eyeY - gh * 0.75));
+      cx.lineTo(px(d * ex - gw * 0.02), py(eyeY - gh * 0.75));
+      cx.lineTo(px(d * ex - gw * 0.32), py(eyeY + gh * 0.55));
+      cx.closePath(); cx.fill(); cx.globalAlpha = 1;
     });
     cx.beginPath();
-    cx.moveTo(x - ex + gw, eyeY); cx.lineTo(x + ex - gw, eyeY);
-    cx.moveTo(x - ex - gw, eyeY); cx.lineTo(x - earX, eyeY + 1 * s);
-    cx.moveTo(x + ex + gw, eyeY); cx.lineTo(x + earX, eyeY + 1 * s);
+    cx.moveTo(px(-ex + gw), py(eyeY)); cx.lineTo(px(ex - gw), py(eyeY));       // bridge
+    cx.moveTo(px(-ex - gw), py(eyeY - 0.4)); cx.lineTo(px(-earX * 0.94), py(eyeY + 1.0));  // arms
+    cx.moveTo(px(ex + gw), py(eyeY - 0.4)); cx.lineTo(px(earX * 0.94), py(eyeY + 1.0));
     cx.stroke();
   }
 
-  // earrings, last so nothing covers them
-  if (look.ear) {
-    circle(x - earX - 1.2 * s, y + 5.8 * s, 2.0 * s, '#E8E0C8');
-    circle(x + earX + 1.2 * s, y + 5.8 * s, 2.0 * s, '#E8E0C8');
+  /* -- piercings (last; nothing should cover them) ------------------------ */
+  if (look.ear && look.ear.studs && !earHidden) {
+    const kind = look.ear.studs;
+    [-1, 1].forEach(d => {
+      if (kind === 'hoop') {
+        cx.strokeStyle = '#E4DCC6'; cx.lineWidth = 0.95 * s;
+        cx.beginPath(); cx.arc(px(d * earX * 0.99), py(5.6), 1.35 * s, 0, 7); cx.stroke();
+      } else {
+        circle(px(d * earX), py(5.9), 1.55 * s, '#E8E0C8');
+        cx.globalAlpha = 0.6; circle(px(d * earX - 0.4), py(5.5), 0.6 * s, '#FFF'); cx.globalAlpha = 1;
+      }
+    });
   }
 }
 
@@ -1438,7 +1833,7 @@ function drawOpponent(f, t) {
     cx.save(); cx.translate(0, -10);
     ellipse(0, 4, 46, 15, shade(L.trunk, -26));
     ellipse(-16, -2, 16, 12, L.skin);
-    drawHead(24, -6, s * 0.82, L, 'down', t);
+    drawHead(24, -6, s * 0.82, L, 'down', t, { dmg: Math.min(1, 0.5 + o.downs * 0.25) });
     circle(-34, 2, 11, L.glove); circle(30, 10, 11, L.glove);
     cx.restore();
     cx.restore();
@@ -1472,7 +1867,11 @@ function drawOpponent(f, t) {
 
   // head
   const headY = -114;
-  drawHead(0, headY, s, L, mood, t);
+  // Damage is cumulative across the fight, not just the current health bar —
+  // health resets on every knockdown, and a man who has been down twice should
+  // not look fresh again. Knockdowns carry most of the weight.
+  const dmg = Math.min(1, o.downs * 0.28 + (1 - o.hp / o.max) * 0.55);
+  drawHead(0, headY, s, L, mood, t, { dmg, turn: Math.max(-1, Math.min(1, lean / 7)) });
 
   // arms and gloves
   [[armL, -1], [armR, 1]].forEach(([a, side]) => {
@@ -1683,7 +2082,7 @@ function drawResult(f, t) {
   cx.fillStyle = win ? 'rgba(10,26,14,.86)' : 'rgba(26,8,8,.86)'; cx.fillRect(0, 0, W, H);
   text(win ? 'WINNER' : 'YOU LOSE', W / 2, 84, 30, win ? '#3FBF8F' : '#FF4D3D');
   mono(f.why.toUpperCase(), W / 2, 106, 10, '#E8E337');
-  drawHead(W / 2, 156, 2.0, f.R.look, win ? 'down' : 'idle', t);
+  drawHead(W / 2, 156, 2.0, f.R.look, win ? 'down' : 'idle', t, { dmg: win ? 0.9 : 0.15 });
   mono(f.R.name.toUpperCase(), W / 2, 194, 10, '#8B94A3');
   text(fmt(f.clock / 1000), W / 2, 220, 20, '#E8E337');
   mono(win ? 'TIME ON THE BOARD' : 'TIME SPENT', W / 2, 234, 8, 'rgba(139,148,163,.7)');
@@ -1795,9 +2194,38 @@ document.addEventListener('visibilitychange', () => {
 // without a visibilitychange in some browsers.
 addEventListener('pagehide', () => Snd.suspend());
 
-setProgress(progress());
-loadBoard();
-requestAnimationFrame(frame);
+/* ---------------------------------------------------------------------------
+   ?faces — a contact sheet of all seven against every expression and a damaged
+   pass. Tuning a face by playing seven fights to reach it is how faces end up
+   untuned; this is the only way to see them together. Not linked from anywhere.
+------------------------------------------------------------------------- */
+if (new URLSearchParams(location.search).has('faces')) {
+  const MOODS = ['idle', 'guard', 'wind', 'hit', 'stun', 'down'];
+  // ?faces&s=1.6 renders at the size the ring actually draws a head, which is
+  // the only scale that matters — detail that only reads at 3x is decoration.
+  const SC = Number(new URLSearchParams(location.search).get('s')) || 3.1;
+  const CW = Math.round(48 * SC), CH = Math.round(57 * SC);
+  cv.width = 90 + MOODS.length * CW + CW;      // one extra column for damage
+  cv.height = 42 + ROSTER.length * CH;
+  cv.style.imageRendering = 'auto';
+  (function sheet(now) {
+    cx.fillStyle = '#0A0C10'; cx.fillRect(0, 0, cv.width, cv.height);
+    MOODS.forEach((m, i) => mono(m.toUpperCase(), 90 + i * CW + CW / 2, 26, 12, '#E8E337'));
+    mono('DAMAGED', 90 + MOODS.length * CW + CW / 2, 26, 12, '#FF4D3D');
+    ROSTER.forEach((R, r) => {
+      const yy = 42 + r * CH + CH * 0.52;
+      mono(R.name, 8, yy - 6, 11, '#8B94A3', 'left');
+      mono(R.nick, 8, yy + 8, 9, 'rgba(139,148,163,.6)', 'left');
+      MOODS.forEach((m, i) => drawHead(90 + i * CW + CW / 2, yy, SC, R.look, m, now));
+      drawHead(90 + MOODS.length * CW + CW / 2, yy, SC, R.look, 'idle', now, { dmg: 0.85 });
+    });
+    requestAnimationFrame(sheet);
+  })(performance.now());
+} else {
+  setProgress(progress());
+  loadBoard();
+  requestAnimationFrame(frame);
+}
 })();
 </script>
 </body>
