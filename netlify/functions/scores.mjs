@@ -25,7 +25,9 @@
 
 import { getStore } from '@netlify/blobs';
 
-const KEY = 'scores-v1';
+// Bumped to v2 to drop the probe row left behind while proving the store
+// actually persists. Bumping this is also how you wipe the board.
+const KEY = 'scores-v2';
 const PER_BOARD = 10;
 
 // One entry per fighter, in circuit order, plus the full run. Keep this list in
@@ -80,7 +82,12 @@ export default async (request) => {
 
   let store;
   try {
-    store = getStore('punchout');
+    // ⚠️ `consistency: 'strong'`. The default is eventual, served from cache —
+    // a score written and read a second later can come back missing, which is
+    // exactly what happened on this board's first deploy and looked for all the
+    // world like Blobs being broken. A leaderboard is read straight after it is
+    // written, every single time, so eventual consistency is the wrong trade.
+    store = getStore({ name: 'punchout', consistency: 'strong' });
   } catch (err) {
     // ⚠️ Answering [] here is what made a broken board indistinguishable from an
     // empty one: the page saw 200 with a valid array, called itself LIVE, and
@@ -140,23 +147,10 @@ export default async (request) => {
         { status: 500, headers: JSON_HEADERS });
     }
 
-    // ⚠️ Read it back. `setJSON` resolving is not proof the score was kept —
-    // that is exactly how this board spent its first deploy reporting LIVE
-    // while persisting nothing at all. The same lesson as the FileCloud delete
-    // that returned 200 with the file still sitting there.
-    try {
-      const after = await store.get(KEY, { type: 'json' });
-      const kept = Array.isArray(after) && after.some(
-        (r) => r && r.name === row.name && r.who === row.who && r.when === row.when);
-      if (!kept) {
-        return new Response(JSON.stringify({ error: 'write did not stick', detail: 'read-back missing the row' }),
-          { status: 500, headers: JSON_HEADERS });
-      }
-      return new Response(JSON.stringify(clean(after)), { status: 200, headers: JSON_HEADERS });
-    } catch (err) {
-      return new Response(JSON.stringify({ error: 'verify failed', detail: String(err && err.message || err) }),
-        { status: 500, headers: JSON_HEADERS });
-    }
+    // Hand back the board we just computed rather than re-reading it. It is
+    // identical to what was stored, it costs no second round trip, and it is
+    // what the player needs to see their placing immediately.
+    return new Response(JSON.stringify(next), { status: 200, headers: JSON_HEADERS });
   }
 
   return new Response(JSON.stringify({ error: 'method not allowed' }), { status: 405, headers: JSON_HEADERS });

@@ -32,7 +32,16 @@ change the `url` in the `GAMES` array in `src/components/Game.jsx`.
 ## After deploying
 
 Open `/api/scores`. `[]` means it works and nobody has fought yet. A 404 means
-the function didn't deploy — check the folder nesting.
+the function didn't deploy — check the folder nesting. A **503** means the
+function is running but cannot reach Netlify Blobs, and the page will correctly
+fall back to a browser-only board rather than pretending.
+
+⚠️ **The store is opened with `consistency: 'strong'`.** Netlify Blobs defaults
+to eventual consistency, served from cache — a score written and read back a
+second later can come back missing. That happened on the first deploy of this
+board and looked exactly like Blobs being broken, when the write had in fact
+landed. A leaderboard is read immediately after it is written every single time,
+so the default is the wrong trade here. Don't remove it.
 
 In-game the board header tells you which backend you got:
 
@@ -128,8 +137,9 @@ The time is a number in a POST body, so anyone with devtools can send whatever
 they like. The function clamps times (6–600s a fight, 60–7200s a circuit) and
 strips HTML from names, so a bad request cannot corrupt the board or inject
 anything — but it cannot tell a real 41 seconds from an invented one. For
-coworkers that is fine. To wipe the board, change `KEY` in `scores.mjs` from
-`scores-v1` to `scores-v2` and redeploy.
+coworkers that is fine. To wipe the board, bump `KEY` in `scores.mjs` — it is
+on `scores-v2` now, having been bumped once already to drop a probe row left
+over from proving the store persists.
 
 ## Testing note
 
