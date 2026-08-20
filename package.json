@@ -1,0 +1,10 @@
+{
+  "name": "harvest-punch-out",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Harvest Punch-Out — work your way up from the production managers to the CEO",
+  "dependencies": {
+    "@netlify/blobs": "^8.1.0"
+  }
+}
